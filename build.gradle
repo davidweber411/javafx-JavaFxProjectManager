@@ -52,6 +52,10 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.wedasoft/simplejavafxapplicationbase
     implementation("com.wedasoft:simplejavafxapplicationbase:1.6.0")
+
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    implementation 'commons-io:commons-io:2.13.0'
+
 }
 
 test {

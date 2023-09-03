@@ -1,8 +1,21 @@
 package com.wedasoft.javafxprojectgenerator.views;
 
+import com.wedasoft.javafxprojectgenerator.MainApplicationLauncher;
+import com.wedasoft.javafxprojectgenerator.services.ZipService;
+import com.wedasoft.simpleJavaFxApplicationBase.jfxDialogs.JfxDialogUtil;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Window;
 import lombok.Getter;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+@SuppressWarnings("ClassCanBeRecord")
 @Getter
 public class MainViewControllerService {
 
@@ -21,70 +34,84 @@ public class MainViewControllerService {
         viewController.getDestinationDirectoryTextField().setText("");
     }
 
-    public void onCreateProjectButtonClick(@SuppressWarnings("unused") ActionEvent event) {
-        System.out.println("onCreateProjectButtonClick");
-
-    }
 
     public void onChooseDestinationDirectoryButtonClick(@SuppressWarnings("unused") ActionEvent event) {
+        DirectoryChooser dc = new DirectoryChooser();
+        dc.setTitle("Choose the destination directory");
+        dc.setInitialDirectory(Path.of(System.getProperty("user.home")).toFile());
+        Window ownerWindow = ((Node) event.getSource()).getScene().getWindow();
+        File file = dc.showDialog(ownerWindow);
+        if (file != null) {
+            viewController.getDestinationDirectoryTextField().setText(file.getAbsolutePath());
+        }
     }
 
-//    @SuppressWarnings({"ResultOfMethodCallIgnored"})
-//    public static void createAppDataDirs() {
-//        File appDataTmpDirPath = new File(APP_DATA_TMP_DIR_PATH);
-//        if (!appDataTmpDirPath.exists()) {
-//            appDataTmpDirPath.mkdirs();
-//        }
-//        File appDataIncludedJdkDirPath = new File(APP_DATA_INCLUDED_JDK_DIR_PATH);
-//        if (!appDataIncludedJdkDirPath.exists()) {
-//            appDataIncludedJdkDirPath.mkdirs();
-//        }
-//    }
-//
-//    private static void extractZippedJdk17() {
-//        for (String zipFilePath : List.of("/com/wedasoft/java2nativeWinConverter/included-openjdk-17-windows-x64-part1.zip", "/com/wedasoft/java2nativeWinConverter/included-openjdk-17-windows-x64-part2.zip")) {
-//            InputStream is = MainApplicationLauncher.class.getResourceAsStream(zipFilePath);
-//            ZipInputStream zis = new ZipInputStream(requireNonNull(is));
-//            try {
-//                ZipEntry entry;
-//                while ((entry = zis.getNextEntry()) != null) {
-//                    String filePath = APP_DATA_ROOT_PATH + File.separator + entry.getName();
-//                    if (!entry.isDirectory()) {
-//                        // if the entry is a file, extract it
-//                        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
-//                        byte[] bytesIn = new byte[1024];
-//                        int read;
-//                        while ((read = zis.read(bytesIn)) != -1) {
-//                            bos.write(bytesIn, 0, read);
-//                        }
-//                        bos.close();
-//                    } else {
-//                        // if the entry is a directory, make the directory
-//                        File dir = new File(filePath);
-//                        //noinspection ResultOfMethodCallIgnored
-//                        dir.mkdirs();
-//                    }
-//                    zis.closeEntry();
-//                }
-//                zis.close();
-//                is.close();
-//            } catch (Exception e) {
-//                JOptionPane.showMessageDialog(null, "Could not extract the zipped part of the JDK 17.");
-//            }
-//        }
-//
-//        Path extractedZipPart1 = Path.of(APP_DATA_ROOT_PATH, "included-openjdk-17-windows-x64-part1");
-//        Path extractedZipPart2 = Path.of(APP_DATA_ROOT_PATH, "included-openjdk-17-windows-x64-part2");
-//        Path includedJdk17Path = Path.of(APP_DATA_INCLUDED_JDK_DIR_PATH);
-//        try {
-//            FileSystemUtils.copyDirContent(extractedZipPart1, includedJdk17Path, true);
-//            FileSystemUtils.copyDirContent(extractedZipPart2, includedJdk17Path, true);
-//            FileSystemUtils.deleteDir(extractedZipPart1, false);
-//            FileSystemUtils.deleteDir(extractedZipPart2, false);
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, "Could not combine the extracted parts of the JDK 17.");
-//            throw new RuntimeException(e);
-//        }
-//    }
+    public void onMenuItemCloseClick() {
+        JfxDialogUtil.displayExitProgramDialog();
+    }
+
+
+    public void onCreateProjectButtonClick(@SuppressWarnings("unused") ActionEvent event) {
+        if (viewController.getApplicationNameTextField().getText().isBlank()) {
+            JfxDialogUtil.createErrorDialog("You must enter an application name.").showAndWait();
+            return;
+        }
+        if (viewController.getGroupIdTextField().getText().isBlank()) {
+            JfxDialogUtil.createErrorDialog("You must enter group id.").showAndWait();
+            return;
+        }
+        if (viewController.getVersionTextField().getText().isBlank()) {
+            JfxDialogUtil.createErrorDialog("You must enter a version.").showAndWait();
+            return;
+        }
+        if (viewController.getModuleSystemTypeChoiceBox().getValue() == null) {
+            JfxDialogUtil.createErrorDialog("You must select a module system type.").showAndWait();
+            return;
+        }
+        if (viewController.getDestinationDirectoryTextField().getText().isBlank()) {
+            JfxDialogUtil.createErrorDialog("You must specify a target destination path.").showAndWait();
+            return;
+        }
+
+        Path destinationDirectoryPath = Paths.get(viewController.getDestinationDirectoryTextField().getText());
+        if (Files.isRegularFile(destinationDirectoryPath)) {
+            JfxDialogUtil.createErrorDialog("The specified target directory must not be a file.").showAndWait();
+            return;
+        }
+        Path projectToCreatePath = destinationDirectoryPath.resolve(Path.of(viewController.getApplicationNameTextField().getText()));
+        if (Files.exists(projectToCreatePath)) {
+            JfxDialogUtil.createErrorDialog("There already exists an project with the name '" + viewController.getApplicationNameTextField().getText() + "' in the target directory.").showAndWait();
+            return;
+        }
+
+        try {
+            // create the tmp directory if it does not exist yet
+            Path userHomeWedasoftPath = Path.of(System.getProperty("user.home"), "Wedasoft", "JavaFxProjectGenerator");
+            Files.createDirectories(userHomeWedasoftPath);
+
+            // clear the tmp directory
+            FileUtils.cleanDirectory(userHomeWedasoftPath.toFile());
+
+            // extract the template project to a tmp directory
+            ZipService.getInstance().extractZipFileFromClassPath(
+                    MainApplicationLauncher.class,
+                    "/com/wedasoft/javafxprojectgenerator/zips/JavaFxAppNonModular.zip",
+                    userHomeWedasoftPath);
+
+            // modify the projects files
+
+            // move the project to the destination directory
+            FileUtils.moveDirectory(
+                    userHomeWedasoftPath.resolve(Path.of("JavaFxAppNonModular")).toFile(),
+                    projectToCreatePath.getParent().resolve(Path.of(viewController.getApplicationNameTextField().getText())).toFile());
+
+            // success message
+            JfxDialogUtil.createInformationDialog("Project created successfully.");
+        } catch (Exception e) {
+            JfxDialogUtil.createErrorDialog("Could not create the project.", e);
+            e.printStackTrace();
+        }
+    }
+
 
 }

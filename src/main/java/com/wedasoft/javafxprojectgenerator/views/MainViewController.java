@@ -23,6 +23,9 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
     private TextField groupIdTextField;
 
     @FXML
+    private TextField versionTextField;
+
+    @FXML
     private ChoiceBox<ModuleSystemType> moduleSystemTypeChoiceBox;
 
     @FXML
@@ -64,6 +67,11 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
     @FXML
     public void onChooseDestinationDirectoryButtonClick(@SuppressWarnings("unused") ActionEvent event) {
         mainViewControllerService.onChooseDestinationDirectoryButtonClick(event);
+    }
+
+    @FXML
+    public void onMenuItemCloseClick() {
+        mainViewControllerService.onMenuItemCloseClick();
     }
 
 }
