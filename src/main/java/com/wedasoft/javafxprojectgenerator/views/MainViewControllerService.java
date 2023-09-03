@@ -1,6 +1,7 @@
 package com.wedasoft.javafxprojectgenerator.views;
 
 import com.wedasoft.javafxprojectgenerator.MainApplicationLauncher;
+import com.wedasoft.javafxprojectgenerator.enums.ModuleSystemType;
 import com.wedasoft.javafxprojectgenerator.services.ZipService;
 import com.wedasoft.simpleJavaFxApplicationBase.jfxDialogs.JfxDialogUtil;
 import javafx.event.ActionEvent;
@@ -11,6 +12,8 @@ import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -72,7 +75,6 @@ public class MainViewControllerService {
             JfxDialogUtil.createErrorDialog("You must specify a target destination path.").showAndWait();
             return;
         }
-
         Path destinationDirectoryPath = Paths.get(viewController.getDestinationDirectoryTextField().getText());
         if (Files.isRegularFile(destinationDirectoryPath)) {
             JfxDialogUtil.createErrorDialog("The specified target directory must not be a file.").showAndWait();
@@ -85,32 +87,59 @@ public class MainViewControllerService {
         }
 
         try {
-            // create the tmp directory if it does not exist yet
-            Path userHomeWedasoftPath = Path.of(System.getProperty("user.home"), "Wedasoft", "JavaFxProjectGenerator");
-            Files.createDirectories(userHomeWedasoftPath);
-
-            // clear the tmp directory
-            FileUtils.cleanDirectory(userHomeWedasoftPath.toFile());
-
-            // extract the template project to a tmp directory
-            ZipService.getInstance().extractZipFileFromClassPath(
-                    MainApplicationLauncher.class,
-                    "/com/wedasoft/javafxprojectgenerator/zips/JavaFxAppNonModular.zip",
-                    userHomeWedasoftPath);
-
-            // modify the projects files
-
-            // move the project to the destination directory
-            FileUtils.moveDirectory(
-                    userHomeWedasoftPath.resolve(Path.of("JavaFxAppNonModular")).toFile(),
-                    projectToCreatePath.getParent().resolve(Path.of(viewController.getApplicationNameTextField().getText())).toFile());
-
-            // success message
-            JfxDialogUtil.createInformationDialog("Project created successfully.");
+            createProject(projectToCreatePath);
         } catch (Exception e) {
             JfxDialogUtil.createErrorDialog("Could not create the project.", e);
             e.printStackTrace();
         }
+    }
+
+    private void createProject(Path projectToCreatePath) throws Exception {
+        // create the tmp directory if it does not exist yet
+        Path userHomeWedasoftPath = Path.of(System.getProperty("user.home"), "Wedasoft", "JavaFxProjectGenerator");
+        Files.createDirectories(userHomeWedasoftPath);
+
+        // clear the tmp directory
+        FileUtils.cleanDirectory(userHomeWedasoftPath.toFile());
+
+        // extract the template project to a tmp directory
+        ZipService.getInstance().extractZipFileFromClassPath(
+                MainApplicationLauncher.class,
+                viewController.getModuleSystemTypeChoiceBox().getValue().getClassPathOfZip(),
+                userHomeWedasoftPath);
+
+        // modify the projects files
+        if (viewController.getModuleSystemTypeChoiceBox().getValue() == ModuleSystemType.NON_MODULAR) {
+            Path tmpProjectPath = userHomeWedasoftPath.resolve(getTmpProjectName());
+
+            modifySettingsGradle(tmpProjectPath);
+
+            // next files...
+
+        }
+
+        // move the project to the destination directory
+        FileUtils.moveDirectory(
+                userHomeWedasoftPath.resolve(Path.of("JavaFxAppNonModular")).toFile(),
+                projectToCreatePath.getParent().resolve(Path.of(viewController.getApplicationNameTextField().getText())).toFile());
+
+        // display success message
+        JfxDialogUtil.createInformationDialog("Project created successfully.").showAndWait();
+    }
+
+    private void modifySettingsGradle(Path tmpProjectPath) throws IOException {
+        String settingsGradle = FileUtils.readFileToString(tmpProjectPath.resolve("settings.gradle").toFile(), Charset.defaultCharset());
+        settingsGradle = settingsGradle.replace(
+                "rootProject.name = \"JavaFxAppNonModular\" //willBeInitilizedByJavaFxProjectGenerator",
+                "rootProject.name = \"" + viewController.getApplicationNameTextField().getText() + "\"");
+        FileUtils.write(tmpProjectPath.resolve("settings.gradle").toFile(), settingsGradle, Charset.defaultCharset());
+    }
+
+    private String getTmpProjectName() {
+        String[] parts = viewController.getModuleSystemTypeChoiceBox().getValue().getClassPathOfZip().split("/");
+        String tmpProjectName = parts[parts.length - 1];
+        tmpProjectName = tmpProjectName.substring(0, tmpProjectName.lastIndexOf('.'));
+        return tmpProjectName;
     }
 
 
