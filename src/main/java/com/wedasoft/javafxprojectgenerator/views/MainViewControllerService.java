@@ -1,5 +1,6 @@
 package com.wedasoft.javafxprojectgenerator.views;
 
+import javafx.event.ActionEvent;
 import lombok.Getter;
 
 @Getter
@@ -13,6 +14,13 @@ public class MainViewControllerService {
         this.controller = controller;
     }
 
+    public void onResetButtonClick(ActionEvent event) {
+        System.out.println("onResetButtonClick");
+    }
+
+    public void onCreateProjectButtonClick(ActionEvent event) {
+        System.out.println("onCreateProjectButtonClick");
+    }
 
 //    @SuppressWarnings({"ResultOfMethodCallIgnored"})
 //    public static void createAppDataDirs() {

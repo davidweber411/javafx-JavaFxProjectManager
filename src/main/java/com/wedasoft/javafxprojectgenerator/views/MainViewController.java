@@ -25,8 +25,11 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
     @FXML
     private ChoiceBox<ModuleSystemType> moduleSystemTypeChoiceBox;
 
+    private MainViewControllerService mainViewControllerService;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        mainViewControllerService = new MainViewControllerService(this);
         moduleSystemTypeChoiceBox.getItems().addAll(ModuleSystemType.values());
         moduleSystemTypeChoiceBox.setConverter(new StringConverter<>() {
             @Override
@@ -48,12 +51,12 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
 
     @FXML
     public void onResetButtonClick(@SuppressWarnings("unused") ActionEvent event) {
-        System.out.println("onResetButtonClick");
+        mainViewControllerService.onResetButtonClick(event);
     }
 
     @FXML
     public void onCreateProjectButtonClick(@SuppressWarnings("unused") ActionEvent event) {
-        System.out.println("onCreateProjectButtonClick");
+        mainViewControllerService.onCreateProjectButtonClick(event);
     }
 
 }
