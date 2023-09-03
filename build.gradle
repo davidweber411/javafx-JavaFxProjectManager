@@ -1,21 +1,26 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.13'
-    id 'org.beryx.jlink' version '2.25.0'
+    id 'org.openjfx.javafxplugin' version '0.0.14'
 }
 
 group 'com.wedasoft'
-version '1.0-SNAPSHOT'
+version '1.0.0'
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 ext {
-    junitVersion = '5.8.2'
+    javaFxVersion = '17.0.8'
+    junitVersion = '5.10.0'
+    assertJVersion = '3.24.2'
+    mainClassNameParam = 'com.wedasoft.javafxprojectgenerator.MainApplicationLauncher'
 }
 
+//noinspection GroovyUnusedAssignment
+mainClassName = "${mainClassNameParam}"
 //noinspection GroovyUnusedAssignment
 sourceCompatibility = '17'
 //noinspection GroovyUnusedAssignment
@@ -25,34 +30,33 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-application {
-    mainModule = 'com.wedasoft.javafxprojectgenerator'
-    mainClass = 'com.wedasoft.javafxprojectgenerator.HelloApplication'
-}
-
 javafx {
-    version = '17.0.2'
+    version = "${javaFxVersion}"
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
 dependencies {
-
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    // https://mvnrepository.com/artifact/org.assertj/assertj-core
+    testImplementation("org.assertj:assertj-core:${assertJVersion}")
+
+    // optionals
+    // https://mvnrepository.com/artifact/com.wedasoft/simplejavafxapplicationbase
+    // implementation("com.wedasoft:simplejavafxapplicationbase:1.6.0")
 }
 
 test {
     useJUnitPlatform()
 }
 
-jlink {
-    imageZip = project.file("${buildDir}/distributions/app-${javafx.platform.classifier}.zip")
-    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-    launcher {
-        name = 'app'
+task createCustomFatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': "${mainClassNameParam}"
     }
-}
-
-jlinkZip {
-    group = 'distribution'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
