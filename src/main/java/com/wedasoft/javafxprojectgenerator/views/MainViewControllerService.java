@@ -18,10 +18,15 @@ public class MainViewControllerService {
         viewController.getApplicationNameTextField().setText("");
         viewController.getGroupIdTextField().setText("");
         viewController.getModuleSystemTypeChoiceBox().setValue(null);
+        viewController.getDestinationDirectoryTextField().setText("");
     }
 
     public void onCreateProjectButtonClick(@SuppressWarnings("unused") ActionEvent event) {
         System.out.println("onCreateProjectButtonClick");
+
+    }
+
+    public void onChooseDestinationDirectoryButtonClick(@SuppressWarnings("unused") ActionEvent event) {
     }
 
 //    @SuppressWarnings({"ResultOfMethodCallIgnored"})

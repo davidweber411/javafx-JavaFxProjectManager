@@ -25,6 +25,9 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
     @FXML
     private ChoiceBox<ModuleSystemType> moduleSystemTypeChoiceBox;
 
+    @FXML
+    private TextField destinationDirectoryTextField;
+
     private MainViewControllerService mainViewControllerService;
 
     @Override
@@ -34,7 +37,7 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
         moduleSystemTypeChoiceBox.setConverter(new StringConverter<>() {
             @Override
             public String toString(ModuleSystemType object) {
-                return object == null ? null : object.name();
+                return object == null ? null : object.getValue();
             }
 
             @Override
@@ -56,6 +59,11 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
     @FXML
     public void onCreateProjectButtonClick(@SuppressWarnings("unused") ActionEvent event) {
         mainViewControllerService.onCreateProjectButtonClick(event);
+    }
+
+    @FXML
+    public void onChooseDestinationDirectoryButtonClick(@SuppressWarnings("unused") ActionEvent event) {
+        mainViewControllerService.onChooseDestinationDirectoryButtonClick(event);
     }
 
 }

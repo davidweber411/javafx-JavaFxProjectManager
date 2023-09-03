@@ -17,7 +17,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wedasoft.javafxprojectgenerator.views.MainViewController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
@@ -49,7 +48,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="General configurations" underline="true" wrapText="true">
+                  <Label text="Application configurations" underline="true" wrapText="true">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
@@ -78,6 +77,31 @@
                   </Label>
                   <Label text="Module system type:" wrapText="true" GridPane.rowIndex="1" />
                   <ChoiceBox fx:id="moduleSystemTypeChoiceBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <Separator prefWidth="200.0" />
+            <GridPane>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label text="Other configurations" underline="true" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label text="Destination directory:" wrapText="true" GridPane.rowIndex="1" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <TextField fx:id="destinationDirectoryTextField" />
+                        <Button mnemonicParsing="false" onAction="#onChooseDestinationDirectoryButtonClick" text="Choose ..." />
+                     </children>
+                  </HBox>
                </children>
             </GridPane>
             <Separator prefWidth="200.0" />
