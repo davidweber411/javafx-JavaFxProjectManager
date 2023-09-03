@@ -46,7 +46,6 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
 
     @Override
     public void onFxmlSceneReady() {
-
     }
 
     @FXML

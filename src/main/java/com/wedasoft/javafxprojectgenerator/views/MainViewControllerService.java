@@ -8,17 +8,19 @@ public class MainViewControllerService {
 
     private static final String END_OF_LINE_TOKEN = "//willBeInitilizedByJavaFxProjectGenerator";
 
-    private final MainViewController controller;
+    private final MainViewController viewController;
 
-    public MainViewControllerService(MainViewController controller) {
-        this.controller = controller;
+    public MainViewControllerService(MainViewController viewController) {
+        this.viewController = viewController;
     }
 
-    public void onResetButtonClick(ActionEvent event) {
-        System.out.println("onResetButtonClick");
+    public void onResetButtonClick(@SuppressWarnings("unused") ActionEvent event) {
+        viewController.getApplicationNameTextField().setText("");
+        viewController.getGroupIdTextField().setText("");
+        viewController.getModuleSystemTypeChoiceBox().setValue(null);
     }
 
-    public void onCreateProjectButtonClick(ActionEvent event) {
+    public void onCreateProjectButtonClick(@SuppressWarnings("unused") ActionEvent event) {
         System.out.println("onCreateProjectButtonClick");
     }
 
