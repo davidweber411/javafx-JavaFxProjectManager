@@ -9,16 +9,16 @@ import java.util.zip.ZipInputStream;
 
 public class ZipService {
 
-    private static ZipService zipService;
+    private static ZipService service;
 
     private ZipService() {
     }
 
     public static synchronized ZipService getInstance() {
-        if (zipService == null) {
-            zipService = new ZipService();
+        if (service == null) {
+            service = new ZipService();
         }
-        return zipService;
+        return service;
     }
 
     public synchronized void extractZipFileFromClassPath(
