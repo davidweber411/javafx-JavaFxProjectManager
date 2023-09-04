@@ -2,6 +2,7 @@ package com.wedasoft.javafxprojectgenerator.views;
 
 import com.wedasoft.javafxprojectgenerator.MainApplicationLauncher;
 import com.wedasoft.javafxprojectgenerator.enums.ModuleSystemType;
+import com.wedasoft.javafxprojectgenerator.exceptions.NotValidException;
 import com.wedasoft.javafxprojectgenerator.helper.HelperFunctions;
 import com.wedasoft.javafxprojectgenerator.services.FileModificationService;
 import com.wedasoft.javafxprojectgenerator.services.ZipService;
@@ -25,8 +26,6 @@ import java.util.Map;
 @Getter
 public class MainViewControllerService {
 
-    private static final String END_OF_LINE_TOKEN = "//willBeInitilizedByJavaFxProjectGenerator";
-
     private final MainViewController viewController;
 
     public MainViewControllerService(MainViewController viewController) {
@@ -39,7 +38,6 @@ public class MainViewControllerService {
         viewController.getModuleSystemTypeChoiceBox().setValue(null);
         viewController.getDestinationDirectoryTextField().setText("");
     }
-
 
     public void onChooseDestinationDirectoryButtonClick(@SuppressWarnings("unused") ActionEvent event) {
         DirectoryChooser dc = new DirectoryChooser();
@@ -56,49 +54,48 @@ public class MainViewControllerService {
         JfxDialogUtil.displayExitProgramDialog();
     }
 
-
     public void onCreateProjectButtonClick(@SuppressWarnings("unused") ActionEvent event) {
-        if (viewController.getApplicationNameTextField().getText().isBlank()) {
-            JfxDialogUtil.createErrorDialog("You must enter an application name.").showAndWait();
-            return;
-        }
-        if (viewController.getGroupIdTextField().getText().isBlank()) {
-            JfxDialogUtil.createErrorDialog("You must enter group id.").showAndWait();
-            return;
-        }
-        if (Arrays.stream(viewController.getGroupIdTextField().getText().split("\\."))
-                .anyMatch(part -> HelperFunctions.isNumeric(part.charAt(0) + ""))) {
-            JfxDialogUtil.createErrorDialog("Group id parts mustn't begin with a number.").showAndWait();
-            return;
-        }
-        if (viewController.getVersionTextField().getText().isBlank()) {
-            JfxDialogUtil.createErrorDialog("You must enter a version.").showAndWait();
-            return;
-        }
-        if (viewController.getModuleSystemTypeChoiceBox().getValue() == null) {
-            JfxDialogUtil.createErrorDialog("You must select a module system type.").showAndWait();
-            return;
-        }
-        if (viewController.getDestinationDirectoryTextField().getText().isBlank()) {
-            JfxDialogUtil.createErrorDialog("You must specify a target destination path.").showAndWait();
-            return;
-        }
-        Path destinationDirectoryPath = Paths.get(viewController.getDestinationDirectoryTextField().getText());
-        if (Files.isRegularFile(destinationDirectoryPath)) {
-            JfxDialogUtil.createErrorDialog("The specified target directory must not be a file.").showAndWait();
-            return;
-        }
-        Path projectToCreatePath = destinationDirectoryPath.resolve(Path.of(viewController.getApplicationNameTextField().getText()));
-        if (Files.exists(projectToCreatePath)) {
-            JfxDialogUtil.createErrorDialog("There already exists an project with the name '" + viewController.getApplicationNameTextField().getText() + "' in the target directory.").showAndWait();
-            return;
-        }
-
         try {
+            validateForm();
+
+            Path projectToCreatePath = Paths.get(viewController.getDestinationDirectoryTextField().getText())
+                    .resolve(Path.of(viewController.getApplicationNameTextField().getText()));
             createProject(projectToCreatePath);
+        } catch (NotValidException nve) {
+            JfxDialogUtil.createErrorDialog(nve.getMessage()).showAndWait();
         } catch (Exception e) {
             JfxDialogUtil.createErrorDialog("Could not create the project.", e);
             e.printStackTrace();
+        }
+    }
+
+    private void validateForm() throws NotValidException {
+        if (viewController.getApplicationNameTextField().getText().isBlank()) {
+            throw new NotValidException("You must enter an application name.");
+        }
+        if (viewController.getGroupIdTextField().getText().isBlank()) {
+            throw new NotValidException("You must enter group id.");
+        }
+        if (Arrays.stream(viewController.getGroupIdTextField().getText().split("\\."))
+                .anyMatch(part -> HelperFunctions.isNumeric(part.charAt(0) + ""))) {
+            throw new NotValidException("Group id parts mustn't begin with a number.");
+        }
+        if (viewController.getVersionTextField().getText().isBlank()) {
+            throw new NotValidException("You must enter a version.");
+        }
+        if (viewController.getModuleSystemTypeChoiceBox().getValue() == null) {
+            throw new NotValidException("You must select a module system type.");
+        }
+        if (viewController.getDestinationDirectoryTextField().getText().isBlank()) {
+            throw new NotValidException("You must specify a target destination path.");
+        }
+        if (Files.isRegularFile(Paths.get(viewController.getDestinationDirectoryTextField().getText()))) {
+            throw new NotValidException("The specified target directory must not be a file.");
+        }
+        if (Files.exists(Paths.get(viewController.getDestinationDirectoryTextField().getText())
+                .resolve(Path.of(viewController.getApplicationNameTextField().getText())))) {
+            throw new NotValidException("There already exists an project with the name '"
+                    + viewController.getApplicationNameTextField().getText() + "' in the target directory.");
         }
     }
 
