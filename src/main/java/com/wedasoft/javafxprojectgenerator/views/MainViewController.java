@@ -5,6 +5,7 @@ import com.wedasoft.simpleJavaFxApplicationBase.sceneSwitcher.FxmlSceneControlle
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
@@ -30,6 +31,24 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
 
     @FXML
     private TextField destinationDirectoryTextField;
+
+    @FXML
+    private CheckBox usePreconfiguredDatabaseCheckbox;
+
+    @FXML
+    private TextField usePreconfiguredDatabaseVersionTextfield;
+
+    @FXML
+    private CheckBox useLibraryWedasoftCheckbox;
+
+    @FXML
+    private TextField useLibraryWedasoftVersionTextfield;
+
+    @FXML
+    private CheckBox useLibraryLombokCheckbox;
+
+    @FXML
+    private TextField useLibraryLombokVersionTextfield;
 
     private MainViewControllerService mainViewControllerService;
 

@@ -70,13 +70,27 @@ public class MainViewControllerService {
         if (viewController.getApplicationNameTextField().getText().isBlank()) {
             throw new NotValidException("You must enter an application name.");
         }
+        if (!viewController.getApplicationNameTextField().getText().matches("[a-zA-Z0-9]+")) {
+            throw new NotValidException("The application name must only contain the characters a-z, A-Z, 0-9.");
+        }
+
         if (viewController.getGroupIdTextField().getText().isBlank()) {
             throw new NotValidException("You must enter group id.");
+        }
+        if (!viewController.getGroupIdTextField().getText().matches("[a-zA-Z0-9.]+")) {
+            throw new NotValidException("The group id must only contain the characters a-z, A-Z, 0-9, (dot).");
+        }
+        if (viewController.getGroupIdTextField().getText().charAt(0) == '.') {
+            throw new NotValidException("The first character of the group id mustn't be a dot.");
+        }
+        if (viewController.getGroupIdTextField().getText().charAt(viewController.getGroupIdTextField().getText().length() - 1) == '.') {
+            throw new NotValidException("The last character of the group id mustn't be a dot.");
         }
         if (Arrays.stream(viewController.getGroupIdTextField().getText().split("\\."))
                 .anyMatch(part -> HelperFunctions.isNumeric(part.charAt(0) + ""))) {
             throw new NotValidException("Group id parts mustn't begin with a number.");
         }
+
         if (viewController.getVersionTextField().getText().isBlank()) {
             throw new NotValidException("You must enter a version.");
         }
