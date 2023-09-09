@@ -15,12 +15,16 @@ import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import static com.wedasoft.javafxprojectgenerator.helper.PathConstants.*;
+import static java.nio.file.Path.of;
 
 @SuppressWarnings("ClassCanBeRecord")
 @Getter
@@ -42,7 +46,7 @@ public class MainViewControllerService {
     public void onChooseDestinationDirectoryButtonClick(@SuppressWarnings("unused") ActionEvent event) {
         DirectoryChooser dc = new DirectoryChooser();
         dc.setTitle("Choose the destination directory");
-        dc.setInitialDirectory(Path.of(System.getProperty("user.home")).toFile());
+        dc.setInitialDirectory(of(System.getProperty("user.home")).toFile());
         Window ownerWindow = ((Node) event.getSource()).getScene().getWindow();
         File file = dc.showDialog(ownerWindow);
         if (file != null) {
@@ -111,110 +115,128 @@ public class MainViewControllerService {
 
     private Path getProjectToCreatePath() {
         return Paths.get(viewController.getDestinationDirectoryTextField().getText())
-                .resolve(Path.of(viewController.getApplicationNameTextField().getText()));
-    }
-
-    private Path getUserHomeWedasoftJavaFxProjectGeneratorPath() {
-        return Path.of(System.getProperty("user.home"), "Wedasoft", "JavaFxProjectGenerator");
+                .resolve(of(viewController.getApplicationNameTextField().getText()));
     }
 
     private void createProject() throws Exception {
         // create the tmp directory if it does not exist yet, clean it, extract zip
-        Files.createDirectories(getUserHomeWedasoftJavaFxProjectGeneratorPath());
-        FileUtils.cleanDirectory(getUserHomeWedasoftJavaFxProjectGeneratorPath().toFile());
+        Files.createDirectories(appTmpDirPath);
+        FileUtils.cleanDirectory(appTmpDirPath.toFile());
         ZipService.getInstance().extractZipFileFromClassPath(
                 MainApplicationLauncher.class,
                 viewController.getModuleSystemTypeChoiceBox().getValue().getClassPathOfZip(),
-                getUserHomeWedasoftJavaFxProjectGeneratorPath());
+                appTmpDirPath);
 
         // modify the projects files
         if (viewController.getModuleSystemTypeChoiceBox().getValue() == ModuleSystemType.NON_MODULAR) {
-            Path tmpProjectPath = getUserHomeWedasoftJavaFxProjectGeneratorPath().resolve(getTmpProjectName());
+            modifySettingsGradle();
+            modifyBuildGradle();
+            modifyMainApplicationLauncherJava();
+            modifyMainApplicationJava();
+            modifyMainViewControllerJava();
+            modifyMainViewFxml();
 
-            FileModificationService.getInstance().modifyAndWriteFile(tmpProjectPath.resolve("settings.gradle"),
-                    Map.ofEntries(
-                            Map.entry("rootProject.name = \"JavaFxAppNonModular\" //willBeInitilizedByJavaFxProjectGenerator",
-                                    "rootProject.name = \"" + viewController.getApplicationNameTextField().getText() + "\"")));
-
-            FileModificationService.getInstance().modifyAndWriteFile(tmpProjectPath.resolve("build.gradle"),
-                    Map.ofEntries(
-                            Map.entry("group 'com.wedasoft'",
-                                    String.format("group '%s'",
-                                            viewController.getGroupIdTextField().getText())),
-                            Map.entry("version '2.0.0'",
-                                    String.format("version '%s'",
-                                            viewController.getVersionTextField().getText())),
-                            Map.entry("mainClassNameParam = 'your.groupId.javafxappnonmodular.MainApplicationLauncher'",
-                                    String.format("mainClassNameParam = '%s.%s.MainApplicationLauncher'",
-                                            viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
-
-            FileModificationService.getInstance().modifyAndWriteFile(tmpProjectPath.resolve("src").resolve("main")
-                            .resolve("java").resolve("your").resolve("groupId").resolve("javafxappnonmodular")
-                            .resolve("MainApplicationLauncher.java"),
-                    Map.ofEntries(
-                            Map.entry("package your.groupId.javafxappnonmodular;",
-                                    String.format("package %s.%s;",
-                                            viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
-
-            FileModificationService.getInstance().modifyAndWriteFile(tmpProjectPath.resolve("src").resolve("main")
-                            .resolve("java").resolve("your").resolve("groupId").resolve("javafxappnonmodular")
-                            .resolve("MainApplication.java"),
-                    Map.ofEntries(
-                            Map.entry("package your.groupId.javafxappnonmodular;",
-                                    String.format("package %s.%s;",
-                                            viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
-
-            FileModificationService.getInstance().modifyAndWriteFile(tmpProjectPath.resolve("src").resolve("main")
-                            .resolve("java").resolve("your").resolve("groupId").resolve("javafxappnonmodular")
-                            .resolve("views").resolve("MainViewController.java"),
-                    Map.ofEntries(
-                            Map.entry("package your.groupId.javafxappnonmodular.views;",
-                                    String.format("package %s.%s.views;",
-                                            viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
-
-            FileModificationService.getInstance().modifyAndWriteFile(tmpProjectPath.resolve("src").resolve("main")
-                            .resolve("resources").resolve("your").resolve("groupId").resolve("javafxappnonmodular")
-                            .resolve("views").resolve("main-view.fxml"),
-                    Map.ofEntries(
-                            Map.entry("your.groupId.javafxappnonmodular.views.MainViewController",
-                                    String.format("%s.%s.views.MainViewController",
-                                            viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
-
-            List<String> groupIdDirectories = Arrays.stream(viewController.getGroupIdTextField().getText().split("\\.")).toList();
-
-            Path javaDirPath = tmpProjectPath.resolve("src").resolve("main").resolve("java");
-            for (String directory : groupIdDirectories) {
-                javaDirPath = javaDirPath.resolve(directory);
-            }
-            javaDirPath = javaDirPath.resolve(viewController.getApplicationNameTextField().getText().toLowerCase());
-            FileUtils.moveDirectory(tmpProjectPath.resolve("src").resolve("main").resolve("java")
-                            .resolve("your").resolve("groupId").resolve("javafxappnonmodular").toFile(),
-                    javaDirPath.toFile());
-            FileUtils.deleteDirectory(tmpProjectPath.resolve("src").resolve("main").resolve("java").resolve("your").toFile());
-
-            Path resourcesDirPath = tmpProjectPath.resolve("src").resolve("main").resolve("resources");
-            for (String directory : groupIdDirectories) {
-                resourcesDirPath = resourcesDirPath.resolve(directory);
-            }
-            resourcesDirPath = resourcesDirPath.resolve(viewController.getApplicationNameTextField().getText().toLowerCase());
-            FileUtils.moveDirectory(tmpProjectPath.resolve("src").resolve("main").resolve("resources")
-                            .resolve("your").resolve("groupId").resolve("javafxappnonmodular").toFile(),
-                    resourcesDirPath.toFile());
-            FileUtils.deleteDirectory(tmpProjectPath.resolve("src").resolve("main").resolve("resources").resolve("your").toFile());
+            moveSrcMainJavaContentFromZipToProjectPackages();
+            moveSrcMainResourcesContentFromZipToProjectPackages();
         }
 
         FileUtils.moveDirectory(
-                getUserHomeWedasoftJavaFxProjectGeneratorPath().resolve(Path.of("JavaFxAppNonModular")).toFile(),
-                getProjectToCreatePath().getParent().resolve(Path.of(viewController.getApplicationNameTextField().getText())).toFile());
+                appTmpDirPath.resolve(of("JavaFxAppNonModular")).toFile(),
+                getProjectToCreatePath().getParent().resolve(of(viewController.getApplicationNameTextField().getText())).toFile());
         JfxDialogUtil.createInformationDialog("Project created successfully.").showAndWait();
     }
 
+    private void moveSrcMainResourcesContentFromZipToProjectPackages() throws IOException {
+        Path resourcesDirPath = getPathTo(srcMainResources);
+        List<String> groupIdDirs = Arrays.stream(viewController.getGroupIdTextField().getText().split("\\.")).toList();
 
-    private String getTmpProjectName() {
+        for (String dir : groupIdDirs) {
+            resourcesDirPath = resourcesDirPath.resolve(dir);
+        }
+        resourcesDirPath = resourcesDirPath.resolve(viewController.getApplicationNameTextField().getText().toLowerCase());
+
+        FileUtils.moveDirectory(getPathTo(srcMainResourcesYourGroupIdJavafxappnonmodular).toFile(), resourcesDirPath.toFile());
+        FileUtils.deleteDirectory(getPathTo(srcMainResourcesYour).toFile());
+    }
+
+    private void moveSrcMainJavaContentFromZipToProjectPackages() throws IOException {
+        Path projectSrcArtifactPath = getPathTo(srcMainJava);
+        List<String> groupIdDirs = Arrays.stream(viewController.getGroupIdTextField().getText().split("\\.")).toList();
+
+        for (String dir : groupIdDirs) {
+            projectSrcArtifactPath = projectSrcArtifactPath.resolve(dir);
+        }
+        projectSrcArtifactPath = projectSrcArtifactPath.resolve(viewController.getApplicationNameTextField().getText().toLowerCase());
+        FileUtils.moveDirectory(getPathTo(srcMainJavaYourGroupIdJavafxappnonmodular).toFile(), projectSrcArtifactPath.toFile());
+        FileUtils.deleteDirectory(getPathTo(srcMainJavaYour).toFile());
+    }
+
+    private void modifyMainViewFxml() throws IOException {
+        FileModificationService.getInstance().modifyAndWriteFile(
+                getPathTo(srcMainResourcesYourGroupIdJavafxappnonmodularViewsMainViewFxml),
+                Map.ofEntries(
+                        Map.entry("your.groupId.javafxappnonmodular.views.MainViewController",
+                                String.format("%s.%s.views.MainViewController",
+                                        viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
+    }
+
+    private void modifyMainViewControllerJava() throws IOException {
+        FileModificationService.getInstance().modifyAndWriteFile(
+                getPathTo(srcMainJavaYourGroupIdJavafxappnonmodularViewsMainViewControllerJava),
+                Map.ofEntries(
+                        Map.entry("package your.groupId.javafxappnonmodular.views;",
+                                String.format("package %s.%s.views;",
+                                        viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
+    }
+
+    private void modifyMainApplicationJava() throws IOException {
+        FileModificationService.getInstance().modifyAndWriteFile(
+                getPathTo(srcMainJavaYourGroupIdJavafxappnonmodularMainApplicationJava),
+                Map.ofEntries(
+                        Map.entry("package your.groupId.javafxappnonmodular;",
+                                String.format("package %s.%s;",
+                                        viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
+    }
+
+    private void modifyMainApplicationLauncherJava() throws IOException {
+        FileModificationService.getInstance().modifyAndWriteFile(
+                getPathTo(srcMainJavaYourGroupIdJavafxappnonmodularMainApplicationLauncherJava),
+                Map.ofEntries(
+                        Map.entry("package your.groupId.javafxappnonmodular;",
+                                String.format("package %s.%s;",
+                                        viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
+    }
+
+    private void modifyBuildGradle() throws IOException {
+        FileModificationService.getInstance().modifyAndWriteFile(
+                getPathTo(buildGradle),
+                Map.ofEntries(
+                        Map.entry("group 'com.wedasoft'",
+                                String.format("group '%s'",
+                                        viewController.getGroupIdTextField().getText())),
+                        Map.entry("version '2.0.0'",
+                                String.format("version '%s'",
+                                        viewController.getVersionTextField().getText())),
+                        Map.entry("mainClassNameParam = 'your.groupId.javafxappnonmodular.MainApplicationLauncher'",
+                                String.format("mainClassNameParam = '%s.%s.MainApplicationLauncher'",
+                                        viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
+    }
+
+    private void modifySettingsGradle() throws IOException {
+        FileModificationService.getInstance().modifyAndWriteFile(
+                getPathTo(settingsGradle),
+                Map.ofEntries(
+                        Map.entry("rootProject.name = \"JavaFxAppNonModular\" //willBeInitilizedByJavaFxProjectGenerator",
+                                "rootProject.name = \"" + viewController.getApplicationNameTextField().getText() + "\"")));
+    }
+
+    private Path getPathTo(String[] dirPathPartsToMainViewFxml) {
+        String tmpZipProjectName;
         String[] parts = viewController.getModuleSystemTypeChoiceBox().getValue().getClassPathOfZip().split("/");
         String tmpProjectName = parts[parts.length - 1];
-        tmpProjectName = tmpProjectName.substring(0, tmpProjectName.lastIndexOf('.'));
-        return tmpProjectName;
+        tmpZipProjectName = tmpProjectName.substring(0, tmpProjectName.lastIndexOf('.'));
+
+        return appTmpDirPath.resolve(of(tmpZipProjectName, dirPathPartsToMainViewFxml));
     }
 
 }
