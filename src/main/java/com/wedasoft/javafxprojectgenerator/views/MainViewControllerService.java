@@ -107,43 +107,45 @@ public class MainViewControllerService {
         if (Files.isRegularFile(Paths.get(viewController.getDestinationDirectoryTextField().getText()))) {
             throw new NotValidException("The specified target directory must not be a file.");
         }
-        if (Files.exists(getProjectToCreatePath())) {
+        if (Files.exists(getNewProjectDestinationDirPath())) {
             throw new NotValidException("There already exists an project with the name '"
                     + viewController.getApplicationNameTextField().getText() + "' in the target directory.");
         }
     }
 
-    private Path getProjectToCreatePath() {
+    private Path getNewProjectDestinationDirPath() {
         return Paths.get(viewController.getDestinationDirectoryTextField().getText())
                 .resolve(of(viewController.getApplicationNameTextField().getText()));
     }
 
     private void createProject() throws Exception {
-        // create the tmp directory if it does not exist yet, clean it, extract zip
+        createAndCleanTmpDirectoryAndUnzipTmpProject();
+
+        modifySettingsGradle();
+        modifyBuildGradle();
+        modifyMainApplicationLauncherJava();
+        modifyMainApplicationJava();
+        modifyMainViewControllerJava();
+        modifyMainViewFxml();
+
+        moveSrcMainJavaContentFromZipToProjectPackages();
+        moveSrcMainResourcesContentFromZipToProjectPackages();
+
+        FileUtils.moveDirectory(
+                appTmpDirPath.resolve(of("JavaFxAppNonModular")).toFile(),
+                getNewProjectDestinationDirPath().toFile());
+
+        JfxDialogUtil.createInformationDialog("Project created successfully.").showAndWait();
+    }
+
+    private void createAndCleanTmpDirectoryAndUnzipTmpProject() throws Exception {
         Files.createDirectories(appTmpDirPath);
         FileUtils.cleanDirectory(appTmpDirPath.toFile());
+
         ZipService.getInstance().extractZipFileFromClassPath(
                 MainApplicationLauncher.class,
                 viewController.getModuleSystemTypeChoiceBox().getValue().getClassPathOfZip(),
                 appTmpDirPath);
-
-        // modify the projects files
-        if (viewController.getModuleSystemTypeChoiceBox().getValue() == ModuleSystemType.NON_MODULAR) {
-            modifySettingsGradle();
-            modifyBuildGradle();
-            modifyMainApplicationLauncherJava();
-            modifyMainApplicationJava();
-            modifyMainViewControllerJava();
-            modifyMainViewFxml();
-
-            moveSrcMainJavaContentFromZipToProjectPackages();
-            moveSrcMainResourcesContentFromZipToProjectPackages();
-        }
-
-        FileUtils.moveDirectory(
-                appTmpDirPath.resolve(of("JavaFxAppNonModular")).toFile(),
-                getProjectToCreatePath().getParent().resolve(of(viewController.getApplicationNameTextField().getText())).toFile());
-        JfxDialogUtil.createInformationDialog("Project created successfully.").showAndWait();
     }
 
     private void moveSrcMainResourcesContentFromZipToProjectPackages() throws IOException {
@@ -172,62 +174,74 @@ public class MainViewControllerService {
     }
 
     private void modifyMainViewFxml() throws IOException {
-        FileModificationService.getInstance().modifyAndWriteFile(
-                getPathTo(srcMainResourcesYourGroupIdJavafxappnonmodularViewsMainViewFxml),
-                Map.ofEntries(
-                        Map.entry("your.groupId.javafxappnonmodular.views.MainViewController",
-                                String.format("%s.%s.views.MainViewController",
-                                        viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
+        if (viewController.getModuleSystemTypeChoiceBox().getValue() == ModuleSystemType.NON_MODULAR) {
+            FileModificationService.getInstance().modifyAndWriteFile(
+                    getPathTo(srcMainResourcesYourGroupIdJavafxappnonmodularViewsMainViewFxml),
+                    Map.ofEntries(
+                            Map.entry("your.groupId.javafxappnonmodular.views.MainViewController",
+                                    String.format("%s.%s.views.MainViewController",
+                                            viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
+        }
     }
 
     private void modifyMainViewControllerJava() throws IOException {
-        FileModificationService.getInstance().modifyAndWriteFile(
-                getPathTo(srcMainJavaYourGroupIdJavafxappnonmodularViewsMainViewControllerJava),
-                Map.ofEntries(
-                        Map.entry("package your.groupId.javafxappnonmodular.views;",
-                                String.format("package %s.%s.views;",
-                                        viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
+        if (viewController.getModuleSystemTypeChoiceBox().getValue() == ModuleSystemType.NON_MODULAR) {
+            FileModificationService.getInstance().modifyAndWriteFile(
+                    getPathTo(srcMainJavaYourGroupIdJavafxappnonmodularViewsMainViewControllerJava),
+                    Map.ofEntries(
+                            Map.entry("package your.groupId.javafxappnonmodular.views;",
+                                    String.format("package %s.%s.views;",
+                                            viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
+        }
     }
 
     private void modifyMainApplicationJava() throws IOException {
-        FileModificationService.getInstance().modifyAndWriteFile(
-                getPathTo(srcMainJavaYourGroupIdJavafxappnonmodularMainApplicationJava),
-                Map.ofEntries(
-                        Map.entry("package your.groupId.javafxappnonmodular;",
-                                String.format("package %s.%s;",
-                                        viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
+        if (viewController.getModuleSystemTypeChoiceBox().getValue() == ModuleSystemType.NON_MODULAR) {
+            FileModificationService.getInstance().modifyAndWriteFile(
+                    getPathTo(srcMainJavaYourGroupIdJavafxappnonmodularMainApplicationJava),
+                    Map.ofEntries(
+                            Map.entry("package your.groupId.javafxappnonmodular;",
+                                    String.format("package %s.%s;",
+                                            viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
+        }
     }
 
     private void modifyMainApplicationLauncherJava() throws IOException {
-        FileModificationService.getInstance().modifyAndWriteFile(
-                getPathTo(srcMainJavaYourGroupIdJavafxappnonmodularMainApplicationLauncherJava),
-                Map.ofEntries(
-                        Map.entry("package your.groupId.javafxappnonmodular;",
-                                String.format("package %s.%s;",
-                                        viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
+        if (viewController.getModuleSystemTypeChoiceBox().getValue() == ModuleSystemType.NON_MODULAR) {
+            FileModificationService.getInstance().modifyAndWriteFile(
+                    getPathTo(srcMainJavaYourGroupIdJavafxappnonmodularMainApplicationLauncherJava),
+                    Map.ofEntries(
+                            Map.entry("package your.groupId.javafxappnonmodular;",
+                                    String.format("package %s.%s;",
+                                            viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
+        }
     }
 
     private void modifyBuildGradle() throws IOException {
-        FileModificationService.getInstance().modifyAndWriteFile(
-                getPathTo(buildGradle),
-                Map.ofEntries(
-                        Map.entry("group 'com.wedasoft'",
-                                String.format("group '%s'",
-                                        viewController.getGroupIdTextField().getText())),
-                        Map.entry("version '2.0.0'",
-                                String.format("version '%s'",
-                                        viewController.getVersionTextField().getText())),
-                        Map.entry("mainClassNameParam = 'your.groupId.javafxappnonmodular.MainApplicationLauncher'",
-                                String.format("mainClassNameParam = '%s.%s.MainApplicationLauncher'",
-                                        viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
+        if (viewController.getModuleSystemTypeChoiceBox().getValue() == ModuleSystemType.NON_MODULAR) {
+            FileModificationService.getInstance().modifyAndWriteFile(
+                    getPathTo(buildGradle),
+                    Map.ofEntries(
+                            Map.entry("group 'com.wedasoft'",
+                                    String.format("group '%s'",
+                                            viewController.getGroupIdTextField().getText())),
+                            Map.entry("version '2.0.0'",
+                                    String.format("version '%s'",
+                                            viewController.getVersionTextField().getText())),
+                            Map.entry("mainClassNameParam = 'your.groupId.javafxappnonmodular.MainApplicationLauncher'",
+                                    String.format("mainClassNameParam = '%s.%s.MainApplicationLauncher'",
+                                            viewController.getGroupIdTextField().getText(), viewController.getApplicationNameTextField().getText().toLowerCase()))));
+        }
     }
 
     private void modifySettingsGradle() throws IOException {
-        FileModificationService.getInstance().modifyAndWriteFile(
-                getPathTo(settingsGradle),
-                Map.ofEntries(
-                        Map.entry("rootProject.name = \"JavaFxAppNonModular\" //willBeInitilizedByJavaFxProjectGenerator",
-                                "rootProject.name = \"" + viewController.getApplicationNameTextField().getText() + "\"")));
+        if (viewController.getModuleSystemTypeChoiceBox().getValue() == ModuleSystemType.NON_MODULAR) {
+            FileModificationService.getInstance().modifyAndWriteFile(
+                    getPathTo(settingsGradle),
+                    Map.ofEntries(
+                            Map.entry("rootProject.name = \"JavaFxAppNonModular\" //willBeInitilizedByJavaFxProjectGenerator",
+                                    "rootProject.name = \"" + viewController.getApplicationNameTextField().getText() + "\"")));
+        }
     }
 
     private Path getPathTo(String[] dirPathPartsToMainViewFxml) {
