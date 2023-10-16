@@ -132,20 +132,20 @@ public class MainViewControllerService {
         moveSrcMainResourcesContentFromZipToProjectPackages();
 
         FileUtils.moveDirectory(
-                appTmpDirPath.resolve(of("JavaFxAppNonModular")).toFile(),
+                userHomeApplicationPath.resolve(of("JavaFxAppNonModular")).toFile(),
                 getNewProjectDestinationDirPath().toFile());
 
         JfxDialogUtil.createInformationDialog("Project created successfully.").showAndWait();
     }
 
     private void createAndCleanTmpDirectoryAndUnzipTmpProject() throws Exception {
-        Files.createDirectories(appTmpDirPath);
-        FileUtils.cleanDirectory(appTmpDirPath.toFile());
+        Files.createDirectories(userHomeApplicationPath);
+        FileUtils.cleanDirectory(userHomeApplicationPath.toFile());
 
         ZipService.getInstance().extractZipFileFromClassPath(
                 MainApplicationLauncher.class,
                 viewController.getModuleSystemTypeChoiceBox().getValue().getClassPathOfZip(),
-                appTmpDirPath);
+                userHomeApplicationPath);
     }
 
     private void moveSrcMainResourcesContentFromZipToProjectPackages() throws IOException {
@@ -250,7 +250,7 @@ public class MainViewControllerService {
         String tmpProjectName = parts[parts.length - 1];
         tmpZipProjectName = tmpProjectName.substring(0, tmpProjectName.lastIndexOf('.'));
 
-        return appTmpDirPath.resolve(of(tmpZipProjectName, dirPathPartsToMainViewFxml));
+        return userHomeApplicationPath.resolve(of(tmpZipProjectName, dirPathPartsToMainViewFxml));
     }
 
 }

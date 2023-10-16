@@ -7,7 +7,7 @@ public class PathConstants {
     /*
     Other
      */
-    public static final Path appTmpDirPath =
+    public static final Path userHomeApplicationPath =
             Path.of(System.getProperty("user.home"), "Wedasoft", "JavaFxProjectGenerator");
 
 
@@ -56,6 +56,5 @@ public class PathConstants {
 
     public static final String[] srcMainJavaYourGroupIdJavafxappnonmodularViewsMainViewControllerJava =
             {"src", "main", "java", "your", "groupId", "javafxappnonmodular", "views", "MainViewController.java"};
-
 
 }
