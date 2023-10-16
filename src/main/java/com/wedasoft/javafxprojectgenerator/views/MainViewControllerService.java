@@ -150,10 +150,10 @@ public class MainViewControllerService {
 
     private void moveSrcMainResourcesContentFromZipToProjectPackages() throws IOException {
         Path resourcesDirPath = getPathTo(srcMainResources);
-        List<String> groupIdDirs = Arrays.stream(viewController.getGroupIdTextField().getText().split("\\.")).toList();
 
-        for (String dir : groupIdDirs) {
-            resourcesDirPath = resourcesDirPath.resolve(dir);
+        List<String> groupIdParts = Arrays.stream(viewController.getGroupIdTextField().getText().split("\\.")).toList();
+        for (String part : groupIdParts) {
+            resourcesDirPath = resourcesDirPath.resolve(part);
         }
         resourcesDirPath = resourcesDirPath.resolve(viewController.getApplicationNameTextField().getText().toLowerCase());
 
@@ -163,12 +163,13 @@ public class MainViewControllerService {
 
     private void moveSrcMainJavaContentFromZipToProjectPackages() throws IOException {
         Path projectSrcArtifactPath = getPathTo(srcMainJava);
-        List<String> groupIdDirs = Arrays.stream(viewController.getGroupIdTextField().getText().split("\\.")).toList();
 
-        for (String dir : groupIdDirs) {
-            projectSrcArtifactPath = projectSrcArtifactPath.resolve(dir);
+        List<String> groupIdParts = Arrays.stream(viewController.getGroupIdTextField().getText().split("\\.")).toList();
+        for (String part : groupIdParts) {
+            projectSrcArtifactPath = projectSrcArtifactPath.resolve(part);
         }
         projectSrcArtifactPath = projectSrcArtifactPath.resolve(viewController.getApplicationNameTextField().getText().toLowerCase());
+
         FileUtils.moveDirectory(getPathTo(srcMainJavaYourGroupIdJavafxappnonmodular).toFile(), projectSrcArtifactPath.toFile());
         FileUtils.deleteDirectory(getPathTo(srcMainJavaYour).toFile());
     }
@@ -245,10 +246,9 @@ public class MainViewControllerService {
     }
 
     private Path getPathTo(String[] dirPathPartsToMainViewFxml) {
-        String tmpZipProjectName;
-        String[] parts = viewController.getModuleSystemTypeChoiceBox().getValue().getClassPathOfZip().split("/");
-        String tmpProjectName = parts[parts.length - 1];
-        tmpZipProjectName = tmpProjectName.substring(0, tmpProjectName.lastIndexOf('.'));
+        String[] zipFilePathParts = viewController.getModuleSystemTypeChoiceBox().getValue().getClassPathOfZip().split("/");
+        String tmpProjectName = zipFilePathParts[zipFilePathParts.length - 1];
+        String tmpZipProjectName = tmpProjectName.substring(0, tmpProjectName.lastIndexOf('.'));
 
         return userHomeApplicationPath.resolve(of(tmpZipProjectName, dirPathPartsToMainViewFxml));
     }
