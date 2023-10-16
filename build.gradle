@@ -5,7 +5,7 @@ plugins {
 }
 
 group 'com.wedasoft'
-version '1.0.0'
+version '1.1.0'
 
 repositories {
     mavenLocal()
@@ -37,25 +37,18 @@ javafx {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
-    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
-    // https://mvnrepository.com/artifact/org.assertj/assertj-core
     testImplementation("org.assertj:assertj-core:${assertJVersion}")
 
-    // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-    // https://mvnrepository.com/artifact/com.wedasoft/simplejavafxapplicationbase
     implementation("com.wedasoft:simplejavafxapplicationbase:1.6.0")
 
-    // https://mvnrepository.com/artifact/commons-io/commons-io
     implementation 'commons-io:commons-io:2.13.0'
-
 }
 
 test {
