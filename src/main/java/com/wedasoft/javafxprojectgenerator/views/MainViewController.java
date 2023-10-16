@@ -67,6 +67,7 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
                 return null;
             }
         });
+        moduleSystemTypeChoiceBox.setValue(moduleSystemTypeChoiceBox.getItems().get(0));
     }
 
     @Override
