@@ -9,11 +9,11 @@ public enum ModuleSystemType {
 
     private final String value;
 
-    private final String classPathOfZip;
+    private final String classPathOfZipFile;
 
-    ModuleSystemType(String value, String classPathOfZip) {
+    ModuleSystemType(String value, String classPathOfZipFile) {
         this.value = value;
-        this.classPathOfZip = classPathOfZip;
+        this.classPathOfZipFile = classPathOfZipFile;
     }
 
     @SuppressWarnings("unused")
