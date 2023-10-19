@@ -26,4 +26,11 @@ public enum ModuleSystemType {
         return null;
     }
 
+    public String getTemplateProjectName() {
+        String[] zipFilePathParts = classPathOfZipFile.split("/");
+        String tmpProjectName = zipFilePathParts[zipFilePathParts.length - 1];
+
+        return tmpProjectName.substring(0, tmpProjectName.lastIndexOf('.'));
+    }
+
 }

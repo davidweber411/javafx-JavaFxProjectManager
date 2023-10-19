@@ -7,7 +7,7 @@ public class PathConstants {
     /*
     Other
      */
-    public static final Path userHomeApplicationPath =
+    public static final Path userHomeAppDataDir =
             Path.of(System.getProperty("user.home"), "Wedasoft", "JavaFxProjectGenerator");
 
 
