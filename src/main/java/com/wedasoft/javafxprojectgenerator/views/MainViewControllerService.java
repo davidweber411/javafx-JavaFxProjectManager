@@ -39,8 +39,18 @@ public class MainViewControllerService {
     public void onResetButtonClick(@SuppressWarnings("unused") ActionEvent event) {
         viewController.getApplicationNameTextField().setText("");
         viewController.getGroupIdTextField().setText("");
-        viewController.getModuleSystemTypeChoiceBox().setValue(null);
+        viewController.getModuleSystemTypeChoiceBox().setValue(viewController.getModuleSystemTypeChoiceBox().getItems().get(0));
+        viewController.getUsePreconfiguredDatabaseCheckbox().setSelected(true);
+        viewController.getUsePreconfiguredDatabaseVersionTextfield().setText("");
+        viewController.getUseLibraryWedasoftCheckbox().setSelected(true);
+        viewController.getUseLibraryWedasoftVersionTextfield().setText("");
+        viewController.getUseLibraryLombokCheckbox().setSelected(true);
+        viewController.getUseLibraryLombokVersionTextfield().setText("");
         viewController.getDestinationDirectoryTextField().setText("");
+    }
+
+    public void onMenuItemCloseClick() {
+        JfxDialogUtil.displayExitProgramDialog();
     }
 
     public void onChooseDestinationDirectoryButtonClick(@SuppressWarnings("unused") ActionEvent event) {
@@ -54,9 +64,6 @@ public class MainViewControllerService {
         }
     }
 
-    public void onMenuItemCloseClick() {
-        JfxDialogUtil.displayExitProgramDialog();
-    }
 
     public void onCreateProjectButtonClick(@SuppressWarnings("unused") ActionEvent event) {
         try {
