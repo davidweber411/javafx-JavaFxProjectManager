@@ -2,6 +2,11 @@
 
 This application is used to create JavaFx projects the easy way.
 
+# Requirements
+
+- Installed JDK 17
+- JAVA_HOME must point to a JDK 17
+
 # How to start the application on Windows
 
 If you use Windows, just start the batch file "START_APPLICATION.bat" in the projects root.

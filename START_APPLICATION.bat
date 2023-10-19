@@ -1,3 +1,5 @@
+CALL gradlew clean
+
 CALL gradlew createCustomFatJar
 
 CALL cd .\build\libs
