@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wedasoft.javafxprojectgenerator.views.MainViewController">
+<BorderPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wedasoft.javafxprojectgenerator.views.main.MainViewController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>

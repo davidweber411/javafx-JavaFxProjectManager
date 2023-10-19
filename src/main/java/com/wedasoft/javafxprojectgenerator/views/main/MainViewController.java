@@ -1,4 +1,4 @@
-package com.wedasoft.javafxprojectgenerator.views;
+package com.wedasoft.javafxprojectgenerator.views.main;
 
 import com.wedasoft.javafxprojectgenerator.enums.ModuleSystemType;
 import com.wedasoft.simpleJavaFxApplicationBase.sceneSwitcher.FxmlSceneControllerBase;

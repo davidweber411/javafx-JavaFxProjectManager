@@ -1,4 +1,4 @@
-package com.wedasoft.javafxprojectgenerator.views;
+package com.wedasoft.javafxprojectgenerator.views.main;
 
 import com.wedasoft.javafxprojectgenerator.MainApplicationLauncher;
 import com.wedasoft.javafxprojectgenerator.enums.ModuleSystemType;
@@ -63,7 +63,6 @@ public class MainViewControllerService {
             viewController.getDestinationDirectoryTextField().setText(file.getAbsolutePath());
         }
     }
-
 
     public void onCreateProjectButtonClick(@SuppressWarnings("unused") ActionEvent event) {
         try {
