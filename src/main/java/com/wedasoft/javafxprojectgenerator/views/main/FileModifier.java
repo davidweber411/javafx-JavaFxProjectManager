@@ -1,6 +1,6 @@
 package com.wedasoft.javafxprojectgenerator.views.main;
 
-import com.wedasoft.javafxprojectgenerator.enums.ModuleSystemType;
+import com.wedasoft.javafxprojectgenerator.enums.ProjectType;
 import com.wedasoft.javafxprojectgenerator.services.FileModificationService;
 
 import java.io.IOException;
@@ -22,11 +22,13 @@ public class FileModifier {
     private Path getPathToFile(
             String[] dirPathPartsToMainViewFxml) {
 
-        return userHomeAppDataDir.resolve(of(projectDataDto.getModuleSystemType().getTemplateProjectName(), dirPathPartsToMainViewFxml));
+        return userHomeAppDataDir.resolve(of(
+                projectDataDto.getProjectType().getTemplateProjectName(),
+                dirPathPartsToMainViewFxml));
     }
 
     public void modifySettingsGradle(ProjectDataDto projectDataDto) throws IOException {
-        if (projectDataDto.getModuleSystemType() == ModuleSystemType.NON_MODULAR) {
+        if (projectDataDto.getProjectType() == ProjectType.GRADLE_NON_MODULAR) {
             FileModificationService.getInstance().modifyAndWriteFile(
                     getPathToFile(settingsGradle),
                     Map.ofEntries(
@@ -36,7 +38,7 @@ public class FileModifier {
     }
 
     public void modifyBuildGradle(ProjectDataDto projectDataDto) throws IOException {
-        if (projectDataDto.getModuleSystemType() == ModuleSystemType.NON_MODULAR) {
+        if (projectDataDto.getProjectType() == ProjectType.GRADLE_NON_MODULAR) {
             FileModificationService.getInstance().modifyAndWriteFile(
                     getPathToFile(buildGradle),
                     Map.ofEntries(
@@ -53,7 +55,7 @@ public class FileModifier {
     }
 
     public void modifyMainApplicationLauncherJava(ProjectDataDto projectDataDto) throws IOException {
-        if (projectDataDto.getModuleSystemType() == ModuleSystemType.NON_MODULAR) {
+        if (projectDataDto.getProjectType() == ProjectType.GRADLE_NON_MODULAR) {
             FileModificationService.getInstance().modifyAndWriteFile(
                     getPathToFile(srcMainJavaYourGroupIdJavafxappnonmodularMainApplicationLauncherJava),
                     Map.ofEntries(
@@ -64,7 +66,7 @@ public class FileModifier {
     }
 
     public void modifyMainApplicationJava(ProjectDataDto projectDataDto) throws IOException {
-        if (projectDataDto.getModuleSystemType() == ModuleSystemType.NON_MODULAR) {
+        if (projectDataDto.getProjectType() == ProjectType.GRADLE_NON_MODULAR) {
             FileModificationService.getInstance().modifyAndWriteFile(
                     getPathToFile(srcMainJavaYourGroupIdJavafxappnonmodularMainApplicationJava),
                     Map.ofEntries(
@@ -75,7 +77,7 @@ public class FileModifier {
     }
 
     public void modifyMainViewControllerJava(ProjectDataDto projectDataDto) throws IOException {
-        if (projectDataDto.getModuleSystemType() == ModuleSystemType.NON_MODULAR) {
+        if (projectDataDto.getProjectType() == ProjectType.GRADLE_NON_MODULAR) {
             FileModificationService.getInstance().modifyAndWriteFile(
                     getPathToFile(srcMainJavaYourGroupIdJavafxappnonmodularViewsMainViewControllerJava),
                     Map.ofEntries(
@@ -86,7 +88,7 @@ public class FileModifier {
     }
 
     public void modifyMainViewFxml(ProjectDataDto projectDataDto) throws IOException {
-        if (projectDataDto.getModuleSystemType() == ModuleSystemType.NON_MODULAR) {
+        if (projectDataDto.getProjectType() == ProjectType.GRADLE_NON_MODULAR) {
             FileModificationService.getInstance().modifyAndWriteFile(
                     getPathToFile(srcMainResourcesYourGroupIdJavafxappnonmodularViewsMainViewFxml),
                     Map.ofEntries(

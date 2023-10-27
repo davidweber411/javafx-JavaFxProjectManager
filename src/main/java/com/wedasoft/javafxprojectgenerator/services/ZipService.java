@@ -26,6 +26,7 @@ public class ZipService {
             String classPathOfZipFile,
             Path targetExtractionPath)
             throws Exception {
+
         InputStream inputStream = mainClassOfApplication.getResourceAsStream(classPathOfZipFile);
         ZipInputStream zipInputStream = new ZipInputStream(Objects.requireNonNull(inputStream));
 

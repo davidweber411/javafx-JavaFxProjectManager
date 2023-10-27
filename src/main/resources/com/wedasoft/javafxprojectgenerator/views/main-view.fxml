@@ -74,13 +74,13 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label text="Module configurations" underline="true" wrapText="true">
+                  <Label text="Project type" underline="true" wrapText="true">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <Label text="Module system type:" wrapText="true" GridPane.rowIndex="1" />
-                  <ChoiceBox fx:id="moduleSystemTypeChoiceBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Project type:" wrapText="true" GridPane.rowIndex="1" />
+                  <ChoiceBox fx:id="projectTypeChoiceBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <Separator prefWidth="200.0" />

@@ -1,6 +1,6 @@
 package com.wedasoft.javafxprojectgenerator.views.main;
 
-import com.wedasoft.javafxprojectgenerator.enums.ModuleSystemType;
+import com.wedasoft.javafxprojectgenerator.enums.ProjectType;
 import com.wedasoft.simpleJavaFxApplicationBase.sceneSwitcher.FxmlSceneControllerBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,7 +27,7 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
     private TextField versionTextField;
 
     @FXML
-    private ChoiceBox<ModuleSystemType> moduleSystemTypeChoiceBox;
+    private ChoiceBox<ProjectType> projectTypeChoiceBox;
 
     @FXML
     private TextField destinationDirectoryTextField;
@@ -55,19 +55,19 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         mainViewControllerService = new MainViewControllerService(this);
-        moduleSystemTypeChoiceBox.getItems().addAll(ModuleSystemType.values());
-        moduleSystemTypeChoiceBox.setConverter(new StringConverter<>() {
+        projectTypeChoiceBox.getItems().addAll(ProjectType.values());
+        projectTypeChoiceBox.setConverter(new StringConverter<>() {
             @Override
-            public String toString(ModuleSystemType object) {
+            public String toString(ProjectType object) {
                 return object == null ? null : object.getValue();
             }
 
             @Override
-            public ModuleSystemType fromString(String string) {
+            public ProjectType fromString(String string) {
                 return null;
             }
         });
-        moduleSystemTypeChoiceBox.setValue(moduleSystemTypeChoiceBox.getItems().get(0));
+        projectTypeChoiceBox.setValue(projectTypeChoiceBox.getItems().get(0));
     }
 
     @Override

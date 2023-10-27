@@ -31,7 +31,11 @@ public class FileModificationService {
         return s.split(", ");
     }
 
-    public synchronized void modifyAndWriteFile(Path pathToFile, Map<String, String> oldStringToNewStringReplacementsMap) throws IOException {
+    public synchronized void modifyAndWriteFile(
+            Path pathToFile,
+            Map<String, String> oldStringToNewStringReplacementsMap)
+            throws IOException {
+
         String fileContent = FileUtils.readFileToString(pathToFile.toFile(), Charset.defaultCharset());
         for (Map.Entry<String, String> entry : oldStringToNewStringReplacementsMap.entrySet()) {
             System.out.println("entry.key=" + entry.getKey());

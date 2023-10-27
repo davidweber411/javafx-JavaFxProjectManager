@@ -1,7 +1,6 @@
 package com.wedasoft.javafxprojectgenerator.views.main;
 
 import com.wedasoft.javafxprojectgenerator.MainApplicationLauncher;
-import com.wedasoft.javafxprojectgenerator.enums.ModuleSystemType;
 import com.wedasoft.javafxprojectgenerator.exceptions.NotValidException;
 import com.wedasoft.javafxprojectgenerator.services.ZipService;
 import com.wedasoft.simpleJavaFxApplicationBase.jfxDialogs.JfxDialogUtil;
@@ -40,7 +39,7 @@ public class MainViewControllerService {
 
         viewController.getApplicationNameTextField().setText("");
         viewController.getGroupIdTextField().setText("");
-        viewController.getModuleSystemTypeChoiceBox().setValue(viewController.getModuleSystemTypeChoiceBox().getItems().get(0));
+        viewController.getProjectTypeChoiceBox().setValue(viewController.getProjectTypeChoiceBox().getItems().get(0));
         viewController.getUsePreconfiguredDatabaseCheckbox().setSelected(true);
         viewController.getUsePreconfiguredDatabaseVersionTextfield().setText("");
         viewController.getUseLibraryWedasoftCheckbox().setSelected(true);
@@ -75,7 +74,7 @@ public class MainViewControllerService {
                     viewController.getApplicationNameTextField().getText(),
                     viewController.getGroupIdTextField().getText(),
                     viewController.getVersionTextField().getText(),
-                    viewController.getModuleSystemTypeChoiceBox().getValue(),
+                    viewController.getProjectTypeChoiceBox().getValue(),
                     viewController.getDestinationDirectoryTextField().getText());
 
             prepareAppDataDirInUserHome();
@@ -106,17 +105,13 @@ public class MainViewControllerService {
 
         ZipService.getInstance().extractZipFileFromClassPath(
                 MainApplicationLauncher.class,
-                projectDataDto.getModuleSystemType().getClassPathOfZipFile(),
+                projectDataDto.getProjectType().getClassPathOfZipFile(),
                 userHomeAppDataDir);
     }
 
     private void modifyProjectTemplateFiles(
             ProjectDataDto projectDataDto)
-            throws IOException, NotValidException {
-
-        if (projectDataDto.getModuleSystemType() != ModuleSystemType.NON_MODULAR) {
-            throw new NotValidException("Only the non modular module system is supported yet.");
-        }
+            throws IOException {
 
         FileModifier fileModifier = new FileModifier(projectDataDto);
         fileModifier.modifySettingsGradle(projectDataDto);
@@ -154,7 +149,7 @@ public class MainViewControllerService {
             throws IOException {
 
         FileUtils.moveDirectory(
-                userHomeAppDataDir.resolve(of("JavaFxAppNonModular")).toFile(),
+                userHomeAppDataDir.resolve(of(projectDataDto.getProjectType().getTemplateProjectName())).toFile(),
                 Paths.get(projectDataDto.getNewProjectDestinationDirPath()).toFile());
     }
 
@@ -163,7 +158,7 @@ public class MainViewControllerService {
             String[] dirPathPartsToMainViewFxml,
             ProjectDataDto projectDataDto) {
 
-        return userHomeAppDataDir.resolve(of(projectDataDto.getModuleSystemType().getTemplateProjectName(), dirPathPartsToMainViewFxml));
+        return userHomeAppDataDir.resolve(of(projectDataDto.getProjectType().getTemplateProjectName(), dirPathPartsToMainViewFxml));
     }
 
 }

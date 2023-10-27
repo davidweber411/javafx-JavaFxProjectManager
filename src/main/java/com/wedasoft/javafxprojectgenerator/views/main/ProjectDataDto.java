@@ -1,6 +1,6 @@
 package com.wedasoft.javafxprojectgenerator.views.main;
 
-import com.wedasoft.javafxprojectgenerator.enums.ModuleSystemType;
+import com.wedasoft.javafxprojectgenerator.enums.ProjectType;
 import com.wedasoft.javafxprojectgenerator.exceptions.NotValidException;
 import com.wedasoft.javafxprojectgenerator.helper.HelperFunctions;
 
@@ -15,20 +15,20 @@ public class ProjectDataDto {
     private final String appName;
     private final String groupId;
     private final String version;
-    private final ModuleSystemType moduleSystemType;
+    private final ProjectType projectType;
     private final String destinationDirPath;
     private final String newProjectDestinationDirPath;
 
     public ProjectDataDto(String appName,
                           String groupId,
                           String version,
-                          ModuleSystemType moduleSystemType,
+                          ProjectType projectType,
                           String destinationDirPath)
             throws NotValidException {
         this.appName = appName;
         this.groupId = groupId;
         this.version = version;
-        this.moduleSystemType = moduleSystemType;
+        this.projectType = projectType;
         this.destinationDirPath = destinationDirPath;
         this.newProjectDestinationDirPath = Paths.get(destinationDirPath).resolve(of(appName)).toString();
         checkValid();
@@ -62,7 +62,7 @@ public class ProjectDataDto {
         if (version.isBlank()) {
             throw new NotValidException("You must enter a version.");
         }
-        if (moduleSystemType == null) {
+        if (projectType == null) {
             throw new NotValidException("You must select a module system type.");
         }
         if (destinationDirPath.isBlank()) {
@@ -89,8 +89,8 @@ public class ProjectDataDto {
         return version;
     }
 
-    public ModuleSystemType getModuleSystemType() {
-        return moduleSystemType;
+    public ProjectType getProjectType() {
+        return projectType;
     }
 
     public String getDestinationDirPath() {
