@@ -12,6 +12,12 @@ public class PathConstants {
 
 
     /*
+    GIT
+     */
+    public static final String[] dotGit =
+            {".git"};
+
+    /*
     Gradle
      */
     public static final String[] buildGradle =

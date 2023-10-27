@@ -120,6 +120,7 @@ public class MainViewControllerService {
         fileModifier.modifyMainApplicationJava(projectDataDto);
         fileModifier.modifyMainViewControllerJava(projectDataDto);
         fileModifier.modifyMainViewFxml(projectDataDto);
+        fileModifier.removeGitDirectory();
     }
 
     private void moveProjectTemplateFilesToCorrectPackages(
