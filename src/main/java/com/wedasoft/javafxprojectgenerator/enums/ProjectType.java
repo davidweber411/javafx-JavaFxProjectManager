@@ -10,14 +10,14 @@ public enum ProjectType {
             "/com/wedasoft/javafxprojectgenerator/zips/JavaFxAppGradleNonModularV1.0.0.zip",
             "JavaFxAppGradleNonModular");
 
-    private final String value;
+    private final String uiText;
 
     private final String classPathOfZipFile;
 
     private final String templateProjectName;
 
-    ProjectType(String value, String classPathOfZipFile, String templateProjectName) {
-        this.value = value;
+    ProjectType(String uiText, String classPathOfZipFile, String templateProjectName) {
+        this.uiText = uiText;
         this.classPathOfZipFile = classPathOfZipFile;
         this.templateProjectName = templateProjectName;
     }
@@ -25,7 +25,7 @@ public enum ProjectType {
     @SuppressWarnings("unused")
     public static ProjectType getByValue(String value) {
         for (ProjectType projectType : ProjectType.values()) {
-            if (projectType.getValue().equals(value)) {
+            if (projectType.getUiText().equals(value)) {
                 return projectType;
             }
         }

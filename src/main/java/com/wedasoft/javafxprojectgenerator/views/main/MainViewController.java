@@ -62,7 +62,7 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
         projectTypeChoiceBox.setConverter(new StringConverter<>() {
             @Override
             public String toString(ProjectType object) {
-                return object == null ? null : object.getValue();
+                return object == null ? null : object.getUiText();
             }
 
             @Override
