@@ -19,11 +19,12 @@ public class ProjectDataDto {
     private final String destinationDirPath;
     private final String newProjectDestinationDirPath;
 
-    public ProjectDataDto(String appName,
-                          String groupId,
-                          String version,
-                          ProjectType projectType,
-                          String destinationDirPath)
+    public ProjectDataDto(
+            String appName,
+            String groupId,
+            String version,
+            ProjectType projectType,
+            String destinationDirPath)
             throws NotValidException {
         this.appName = appName;
         this.groupId = groupId;

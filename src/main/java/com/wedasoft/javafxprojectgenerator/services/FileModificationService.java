@@ -24,7 +24,9 @@ public class FileModificationService {
     }
 
     @SuppressWarnings("unused")
-    public synchronized String[] splitFilePathToParts(String path) {
+    public synchronized String[] splitFilePathToParts(
+            String path) {
+
         String s = Arrays.deepToString(path.split(Matcher.quoteReplacement(System.getProperty("file.separator"))));
         s = s.substring(1);
         s = s.substring(0, s.length() - 1);

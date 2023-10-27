@@ -53,7 +53,10 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
     private MainViewControllerService mainViewControllerService;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(
+            URL location,
+            ResourceBundle resources) {
+
         mainViewControllerService = new MainViewControllerService(this);
         projectTypeChoiceBox.getItems().addAll(ProjectType.values());
         projectTypeChoiceBox.setConverter(new StringConverter<>() {
@@ -75,17 +78,23 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
     }
 
     @FXML
-    public void onResetButtonClick(@SuppressWarnings("unused") ActionEvent event) {
+    public void onResetButtonClick(
+            @SuppressWarnings("unused") ActionEvent event) {
+
         mainViewControllerService.onResetButtonClick(event);
     }
 
     @FXML
-    public void onCreateProjectButtonClick(@SuppressWarnings("unused") ActionEvent event) {
+    public void onCreateProjectButtonClick(
+            @SuppressWarnings("unused") ActionEvent event) {
+
         mainViewControllerService.onCreateProjectButtonClick(event);
     }
 
     @FXML
-    public void onChooseDestinationDirectoryButtonClick(@SuppressWarnings("unused") ActionEvent event) {
+    public void onChooseDestinationDirectoryButtonClick(
+            @SuppressWarnings("unused") ActionEvent event) {
+
         mainViewControllerService.onChooseDestinationDirectoryButtonClick(event);
     }
 

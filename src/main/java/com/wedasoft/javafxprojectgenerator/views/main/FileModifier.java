@@ -27,7 +27,10 @@ public class FileModifier {
                 dirPathPartsToMainViewFxml));
     }
 
-    public void modifySettingsGradle(ProjectDataDto projectDataDto) throws IOException {
+    public void modifySettingsGradle(
+            ProjectDataDto projectDataDto)
+            throws IOException {
+
         if (projectDataDto.getProjectType() == ProjectType.GRADLE_NON_MODULAR) {
             FileModificationService.getInstance().modifyAndWriteFile(
                     getPathToFile(settingsGradle),
@@ -37,7 +40,10 @@ public class FileModifier {
         }
     }
 
-    public void modifyBuildGradle(ProjectDataDto projectDataDto) throws IOException {
+    public void modifyBuildGradle(
+            ProjectDataDto projectDataDto)
+            throws IOException {
+
         if (projectDataDto.getProjectType() == ProjectType.GRADLE_NON_MODULAR) {
             FileModificationService.getInstance().modifyAndWriteFile(
                     getPathToFile(buildGradle),
@@ -54,7 +60,10 @@ public class FileModifier {
         }
     }
 
-    public void modifyMainApplicationLauncherJava(ProjectDataDto projectDataDto) throws IOException {
+    public void modifyMainApplicationLauncherJava(
+            ProjectDataDto projectDataDto)
+            throws IOException {
+
         if (projectDataDto.getProjectType() == ProjectType.GRADLE_NON_MODULAR) {
             FileModificationService.getInstance().modifyAndWriteFile(
                     getPathToFile(srcMainJavaYourGroupIdJavafxappnonmodularMainApplicationLauncherJava),
@@ -65,7 +74,10 @@ public class FileModifier {
         }
     }
 
-    public void modifyMainApplicationJava(ProjectDataDto projectDataDto) throws IOException {
+    public void modifyMainApplicationJava(
+            ProjectDataDto projectDataDto)
+            throws IOException {
+
         if (projectDataDto.getProjectType() == ProjectType.GRADLE_NON_MODULAR) {
             FileModificationService.getInstance().modifyAndWriteFile(
                     getPathToFile(srcMainJavaYourGroupIdJavafxappnonmodularMainApplicationJava),
@@ -76,7 +88,10 @@ public class FileModifier {
         }
     }
 
-    public void modifyMainViewControllerJava(ProjectDataDto projectDataDto) throws IOException {
+    public void modifyMainViewControllerJava(
+            ProjectDataDto projectDataDto)
+            throws IOException {
+
         if (projectDataDto.getProjectType() == ProjectType.GRADLE_NON_MODULAR) {
             FileModificationService.getInstance().modifyAndWriteFile(
                     getPathToFile(srcMainJavaYourGroupIdJavafxappnonmodularViewsMainViewControllerJava),
@@ -87,7 +102,10 @@ public class FileModifier {
         }
     }
 
-    public void modifyMainViewFxml(ProjectDataDto projectDataDto) throws IOException {
+    public void modifyMainViewFxml(
+            ProjectDataDto projectDataDto)
+            throws IOException {
+
         if (projectDataDto.getProjectType() == ProjectType.GRADLE_NON_MODULAR) {
             FileModificationService.getInstance().modifyAndWriteFile(
                     getPathToFile(srcMainResourcesYourGroupIdJavafxappnonmodularViewsMainViewFxml),
