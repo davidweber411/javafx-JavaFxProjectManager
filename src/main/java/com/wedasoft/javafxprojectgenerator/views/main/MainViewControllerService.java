@@ -2,6 +2,7 @@ package com.wedasoft.javafxprojectgenerator.views.main;
 
 import com.wedasoft.javafxprojectgenerator.MainApplicationLauncher;
 import com.wedasoft.javafxprojectgenerator.exceptions.NotValidException;
+import com.wedasoft.javafxprojectgenerator.helper.FileHelper;
 import com.wedasoft.javafxprojectgenerator.services.ZipService;
 import com.wedasoft.simpleJavaFxApplicationBase.jfxDialogs.JfxDialogUtil;
 import javafx.event.ActionEvent;
@@ -78,7 +79,8 @@ public class MainViewControllerService {
                     viewController.getDestinationDirectoryTextField().getText());
 
             prepareAppDataDirInUserHome();
-            extractProjectTemplateFromZip(projectDataDto);
+            extractTemplateProjectFromZip(projectDataDto);
+            extractBuildManagementSystemFilesFromZip(projectDataDto);
             modifyProjectTemplateFiles(projectDataDto);
             moveProjectTemplateFilesToCorrectPackages(projectDataDto);
             moveCreatedProjectToDestinationDir(projectDataDto);
@@ -99,21 +101,38 @@ public class MainViewControllerService {
         FileUtils.cleanDirectory(userHomeAppDataDir.toFile());
     }
 
-    private void extractProjectTemplateFromZip(
+    private void extractTemplateProjectFromZip(
             ProjectDataDto projectDataDto)
             throws Exception {
 
         ZipService.getInstance().extractZipFileFromClassPath(
                 MainApplicationLauncher.class,
-                projectDataDto.getProjectType().getClassPathOfZipFile(),
+                projectDataDto.getProjectType().getClassPathOfTemplateProjectZip(),
                 userHomeAppDataDir);
+    }
+
+    private void extractBuildManagementSystemFilesFromZip(
+            ProjectDataDto projectDataDto)
+            throws Exception {
+
+        Path projectDir = userHomeAppDataDir.resolve(projectDataDto.getProjectType().getExtractedProjectDirName());
+        ZipService.getInstance().extractZipFileFromClassPath(
+                MainApplicationLauncher.class,
+                projectDataDto.getProjectType().getClassPathOfBmsFilesZip(),
+                projectDir);
+
+        Path bmsFilesZipDir = projectDir.resolve(projectDataDto.getProjectType().getExtractedBmsFilesDirName());
+        if (Files.exists(bmsFilesZipDir)) {
+            FileHelper.copyDirContent(bmsFilesZipDir, bmsFilesZipDir.getParent(), true);
+        }
     }
 
     private void modifyProjectTemplateFiles(
             ProjectDataDto projectDataDto)
-            throws IOException {
+            throws IOException, NotValidException {
 
         FileModifier fileModifier = new FileModifier(projectDataDto);
+        fileModifier.modifyPomXml(projectDataDto);
         fileModifier.modifySettingsGradle(projectDataDto);
         fileModifier.modifyBuildGradle(projectDataDto);
         fileModifier.modifyMainApplicationLauncherJava(projectDataDto);

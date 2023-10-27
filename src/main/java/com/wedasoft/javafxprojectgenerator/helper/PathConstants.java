@@ -10,12 +10,17 @@ public class PathConstants {
     public static final Path userHomeAppDataDir =
             Path.of(System.getProperty("user.home"), "Wedasoft", "JavaFxProjectGenerator");
 
-
     /*
     GIT
      */
     public static final String[] dotGit =
             {".git"};
+
+    /*
+    Maven
+     */
+    public static final String[] pomXml =
+            {"pom.xml"};
 
     /*
     Gradle
@@ -25,7 +30,6 @@ public class PathConstants {
 
     public static final String[] settingsGradle =
             {"settings.gradle"};
-
 
     /*
     Resources

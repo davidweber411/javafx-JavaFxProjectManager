@@ -7,22 +7,32 @@ public enum ProjectType {
 
     GRADLE_NON_MODULAR(
             "Gradle (non modular)",
-            "/com/wedasoft/javafxprojectgenerator/zips/JavaFxAppGradleNonModularV1.0.0.zip",
-            "JavaFxAppGradleNonModular");
+            "/com/wedasoft/javafxprojectgenerator/zips/JavaFxAppNonModular.zip",
+            "/com/wedasoft/javafxprojectgenerator/zips/bmsFilesForGradle.zip",
+            "JavaFxAppNonModular"),
+    MAVEN_NON_MODULAR(
+            "Maven (non modular)",
+            "/com/wedasoft/javafxprojectgenerator/zips/JavaFxAppNonModular.zip",
+            "/com/wedasoft/javafxprojectgenerator/zips/bmsFilesForMaven.zip",
+            "JavaFxAppNonModular");
 
     private final String uiText;
 
-    private final String classPathOfZipFile;
+    private final String classPathOfTemplateProjectZip;
+
+    private final String classPathOfBmsFilesZip;
 
     private final String templateProjectName;
 
     ProjectType(
             String uiText,
-            String classPathOfZipFile,
+            String classPathOfTemplateProjectZip,
+            String classPathOfBmsFilesZip,
             String templateProjectName) {
 
         this.uiText = uiText;
-        this.classPathOfZipFile = classPathOfZipFile;
+        this.classPathOfTemplateProjectZip = classPathOfTemplateProjectZip;
+        this.classPathOfBmsFilesZip = classPathOfBmsFilesZip;
         this.templateProjectName = templateProjectName;
     }
 
@@ -38,11 +48,16 @@ public enum ProjectType {
         return null;
     }
 
-    //    public String getTemplateProjectName() {
-    //        String[] zipFilePathParts = classPathOfZipFile.split("/");
-    //        String tmpProjectName = zipFilePathParts[zipFilePathParts.length - 1];
-    //
-    //        return tmpProjectName.substring(0, tmpProjectName.lastIndexOf('.'));
-    //    }
+    public String getExtractedProjectDirName() {
+        String[] zipFilePathParts = classPathOfTemplateProjectZip.split("/");
+        String tmpProjectName = zipFilePathParts[zipFilePathParts.length - 1];
+        return tmpProjectName.substring(0, tmpProjectName.lastIndexOf('.'));
+    }
+
+    public String getExtractedBmsFilesDirName() {
+        String[] zipFilePathParts = classPathOfBmsFilesZip.split("/");
+        String tmpProjectName = zipFilePathParts[zipFilePathParts.length - 1];
+        return tmpProjectName.substring(0, tmpProjectName.lastIndexOf('.'));
+    }
 
 }
