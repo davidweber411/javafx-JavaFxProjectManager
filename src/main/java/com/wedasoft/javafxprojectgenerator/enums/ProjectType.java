@@ -16,14 +16,20 @@ public enum ProjectType {
 
     private final String templateProjectName;
 
-    ProjectType(String uiText, String classPathOfZipFile, String templateProjectName) {
+    ProjectType(
+            String uiText,
+            String classPathOfZipFile,
+            String templateProjectName) {
+
         this.uiText = uiText;
         this.classPathOfZipFile = classPathOfZipFile;
         this.templateProjectName = templateProjectName;
     }
 
     @SuppressWarnings("unused")
-    public static ProjectType getByValue(String value) {
+    public static ProjectType getByValue(
+            String value) {
+
         for (ProjectType projectType : ProjectType.values()) {
             if (projectType.getUiText().equals(value)) {
                 return projectType;
