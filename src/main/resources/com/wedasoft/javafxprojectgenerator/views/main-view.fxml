@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wedasoft.javafxprojectgenerator.views.main.MainViewController">
+<BorderPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wedasoft.javafxprojectgenerator.views.main.MainViewController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -58,16 +58,16 @@
                   </Label>
                   <Label text="Application name:" wrapText="true" GridPane.rowIndex="1" />
                   <Label text="Group id:" wrapText="true" GridPane.rowIndex="2" />
-                  <TextField fx:id="applicationNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="groupIdTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="applicationNameTextField" promptText="EmailSenderApp" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="groupIdTextField" promptText="com.example" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label text="Version:" wrapText="true" GridPane.rowIndex="3" />
-                  <TextField fx:id="versionTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="versionTextField" promptText="1.0.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <Label text="Project type:" wrapText="true" GridPane.rowIndex="4" />
                   <ChoiceBox fx:id="projectTypeChoiceBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                </children>
             </GridPane>
             <Separator prefWidth="200.0" />
-            <GridPane hgap="5.0" layoutX="20.0" layoutY="246.0" vgap="5.0">
+            <GridPane disable="true" hgap="5.0" layoutX="20.0" layoutY="246.0" vgap="5.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" />
                   <ColumnConstraints hgrow="SOMETIMES" />
@@ -84,9 +84,9 @@
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </Label>
-                  <CheckBox fx:id="useLibraryWedasoftCheckbox" mnemonicParsing="false" selected="true" text="Use library &quot;SimpleJavaFxApplicationBase&quot;" GridPane.rowIndex="2" />
-                  <CheckBox fx:id="usePreconfiguredDatabaseCheckbox" mnemonicParsing="false" selected="true" text="Use preconfigured database (H2)" GridPane.rowIndex="1" />
-                  <CheckBox fx:id="useLibraryLombokCheckbox" mnemonicParsing="false" selected="true" text="Use library &quot;Lombok&quot;" GridPane.rowIndex="3" />
+                  <CheckBox fx:id="useLibraryWedasoftCheckbox" mnemonicParsing="false" text="Use library &quot;SimpleJavaFxApplicationBase&quot;" GridPane.rowIndex="2" />
+                  <CheckBox fx:id="usePreconfiguredDatabaseCheckbox" mnemonicParsing="false" text="Use preconfigured database (H2)" GridPane.rowIndex="1" />
+                  <CheckBox fx:id="useLibraryLombokCheckbox" mnemonicParsing="false" text="Use library &quot;Lombok&quot;" GridPane.rowIndex="3" />
                   <TextField fx:id="useLibraryWedasoftVersionTextfield" promptText="Version (default: 1.7.0)" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="usePreconfiguredDatabaseVersionTextfield" promptText="Version (default: 2.2.220)" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="useLibraryLombokVersionTextfield" promptText="Version (default: 1.18.28)" GridPane.columnIndex="1" GridPane.rowIndex="3" />
