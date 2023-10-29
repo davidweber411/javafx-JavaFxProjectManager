@@ -125,6 +125,7 @@ public class MainViewControllerService {
         if (Files.exists(bmsFilesZipDir)) {
             FileHelper.copyDirContent(bmsFilesZipDir, bmsFilesZipDir.getParent(), true);
         }
+        FileHelper.deleteDir(bmsFilesZipDir, true);
     }
 
     private void modifyProjectTemplateFiles(

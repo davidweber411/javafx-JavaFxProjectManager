@@ -1,12 +1,17 @@
 package com.wedasoft.javafxprojectgenerator.helper;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class FileHelper {
 
-    public static Path copyDirContent(Path contentContainingDir, Path copyIntoDirPath, boolean overwriteExistingFiles)
+    public static Path copyDirContent(
+            Path contentContainingDir,
+            Path copyIntoDirPath,
+            boolean overwriteExistingFiles)
             throws Exception {
+
         if (contentContainingDir == null) {
             throw new IllegalArgumentException(
                     "Directory content could not be copied. The path of the content containing directory to copy must not be null.");
@@ -25,6 +30,19 @@ public class FileHelper {
                 new CopyFileVisitor(contentContainingDir, copyIntoDirPath, overwriteExistingFiles));
 
         return copyIntoDirPath;
+    }
+
+    public static Path deleteDir(
+            Path pathOfDirToDelete,
+            boolean throwIfDirNotExists)
+            throws Exception {
+
+        if (Files.isDirectory(pathOfDirToDelete)) {
+            return Files.walkFileTree(pathOfDirToDelete, new DeleteFileVisitor());
+        } else if (throwIfDirNotExists) {
+            throw new FileNotFoundException("The directory could not be deleted because it does not exist.");
+        }
+        return null;
     }
 
 }
