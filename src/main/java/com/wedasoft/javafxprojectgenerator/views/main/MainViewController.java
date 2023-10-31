@@ -103,4 +103,9 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
         mainViewControllerService.onMenuItemCloseClick();
     }
 
+    @FXML
+    public void onMenuItemAboutClick() {
+        mainViewControllerService.onMenuItemAboutClick();
+    }
+
 }

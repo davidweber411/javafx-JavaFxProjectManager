@@ -2,11 +2,13 @@ package com.wedasoft.javafxprojectgenerator.views.main;
 
 import com.wedasoft.javafxprojectgenerator.MainApplicationLauncher;
 import com.wedasoft.javafxprojectgenerator.exceptions.NotValidException;
+import com.wedasoft.javafxprojectgenerator.helper.DialogHelper;
 import com.wedasoft.javafxprojectgenerator.helper.FileHelper;
 import com.wedasoft.javafxprojectgenerator.services.ZipService;
 import com.wedasoft.simpleJavaFxApplicationBase.jfxDialogs.JfxDialogUtil;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Window;
 import lombok.Getter;
@@ -182,4 +184,11 @@ public class MainViewControllerService {
         return userHomeAppDataDir.resolve(of(projectDataDto.getProjectType().getTemplateProjectName(), dirPathPartsToMainViewFxml));
     }
 
+    public void onMenuItemAboutClick() {
+        DialogHelper.displayDialogWithColumns("About", 2, List.of(
+                new Label("Developed by:"),
+                new Label("David Weber"),
+                new Label("Homepage:"),
+                new Label("www.wedasoft.com")));
+    }
 }
