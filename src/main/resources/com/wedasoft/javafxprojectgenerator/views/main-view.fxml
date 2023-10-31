@@ -29,6 +29,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
+                  <MenuItem mnemonicParsing="false" onAction="#onMenuItemHowToImportInEclipseClick" text="How to import in Eclipse" />
               <MenuItem mnemonicParsing="false" onAction="#onMenuItemAboutClick" text="About" />
             </items>
           </Menu>

@@ -9,6 +9,7 @@ import com.wedasoft.simpleJavaFxApplicationBase.jfxDialogs.JfxDialogUtil;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Window;
 import lombok.Getter;
@@ -21,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static com.wedasoft.javafxprojectgenerator.helper.PathConstants.*;
 import static java.nio.file.Path.of;
@@ -191,4 +193,16 @@ public class MainViewControllerService {
                 new Label("Homepage:"),
                 new Label("www.wedasoft.com")));
     }
+
+    public void onMenuItemHowToImportInEclipseClick() {
+        DialogHelper.displayDialogWithColumns("About", 3, List.of(
+                new Label("Step 1: Start the import wizard"),
+                new Label("Step 2: Select the build management system"),
+                new Label("Step 3: 'Next' and continue the installer wizard"),
+                new ImageView(Objects.requireNonNull(getClass().getResource(
+                        "/com/wedasoft/javafxprojectgenerator/images/import-in-eclipse-1.jpg")).toString()),
+                new ImageView(Objects.requireNonNull(getClass().getResource(
+                        "/com/wedasoft/javafxprojectgenerator/images/import-in-eclipse-2.jpg")).toString())));
+    }
+
 }

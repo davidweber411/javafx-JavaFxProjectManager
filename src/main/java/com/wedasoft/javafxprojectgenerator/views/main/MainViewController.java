@@ -108,4 +108,9 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
         mainViewControllerService.onMenuItemAboutClick();
     }
 
+    @FXML
+    public void onMenuItemHowToImportInEclipseClick(){
+        mainViewControllerService.onMenuItemHowToImportInEclipseClick();
+    }
+
 }
