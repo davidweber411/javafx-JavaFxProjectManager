@@ -1,17 +1,21 @@
-# Description
+### Description
 
 This application is used to create JavaFx projects the easy way.
 
-# Requirements
+### Requirements
 
 - Installed JDK 17
 - JAVA_HOME must point to a JDK 17
 
-# How to start the application on Windows
+### Download links for compiled JARs
+
+https://wedasoft.com/projects/javafx-project-generator/
+
+### How to start the application on Windows
 
 If you use Windows, just start the batch file "START_APPLICATION.bat" in the projects root.
 
-# How to start the application on Linux (works on Windows too)
+### How to start the application on Linux (works on Windows too)
 
 1. Download this project to your local machine.<br><br>
 2. Create an executable fat jar of this project.
