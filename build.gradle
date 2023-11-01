@@ -13,11 +13,12 @@ repositories {
 }
 
 ext {
+    mainClassNameParam = 'com.wedasoft.javafxprojectgenerator.MainApplicationLauncher'
     javaFxVersion = '17.0.8'
     junitVersion = '5.10.0'
     assertJVersion = '3.24.2'
     lombokVersion = '1.18.28'
-    mainClassNameParam = 'com.wedasoft.javafxprojectgenerator.MainApplicationLauncher'
+    simplejavafxapplicationbaseVersion = '1.7.0'
 }
 
 //noinspection GroovyUnusedAssignment
@@ -46,7 +47,7 @@ dependencies {
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-    implementation("com.wedasoft:simplejavafxapplicationbase:1.7.0")
+    implementation("com.wedasoft:simplejavafxapplicationbase:${simplejavafxapplicationbaseVersion}")
 
     implementation 'commons-io:commons-io:2.13.0'
 }
