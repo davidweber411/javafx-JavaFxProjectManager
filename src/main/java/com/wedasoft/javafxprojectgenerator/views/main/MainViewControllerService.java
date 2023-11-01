@@ -59,7 +59,7 @@ public class MainViewControllerService {
     }
 
     public void onChooseDestinationDirectoryButtonClick(
-            @SuppressWarnings("unused") ActionEvent event) {
+            ActionEvent event) {
 
         DirectoryChooser dc = new DirectoryChooser();
         dc.setTitle("Choose the destination directory");

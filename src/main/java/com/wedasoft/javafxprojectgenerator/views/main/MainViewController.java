@@ -19,34 +19,24 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
 
     @FXML
     private TextField applicationNameTextField;
-
     @FXML
     private TextField groupIdTextField;
-
     @FXML
     private TextField versionTextField;
-
     @FXML
     private ChoiceBox<ProjectType> projectTypeChoiceBox;
-
     @FXML
     private TextField destinationDirectoryTextField;
-
     @FXML
     private CheckBox usePreconfiguredDatabaseCheckbox;
-
     @FXML
     private TextField usePreconfiguredDatabaseVersionTextfield;
-
     @FXML
     private CheckBox useLibraryWedasoftCheckbox;
-
     @FXML
     private TextField useLibraryWedasoftVersionTextfield;
-
     @FXML
     private CheckBox useLibraryLombokCheckbox;
-
     @FXML
     private TextField useLibraryLombokVersionTextfield;
 
@@ -79,21 +69,21 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
 
     @FXML
     public void onResetButtonClick(
-            @SuppressWarnings("unused") ActionEvent event) {
+            ActionEvent event) {
 
         mainViewControllerService.onResetButtonClick(event);
     }
 
     @FXML
     public void onCreateProjectButtonClick(
-            @SuppressWarnings("unused") ActionEvent event) {
+            ActionEvent event) {
 
         mainViewControllerService.onCreateProjectButtonClick(event);
     }
 
     @FXML
     public void onChooseDestinationDirectoryButtonClick(
-            @SuppressWarnings("unused") ActionEvent event) {
+            ActionEvent event) {
 
         mainViewControllerService.onChooseDestinationDirectoryButtonClick(event);
     }
