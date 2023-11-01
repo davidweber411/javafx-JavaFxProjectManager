@@ -93,7 +93,7 @@ public class MainViewControllerService {
         } catch (NotValidException nve) {
             JfxDialogUtil.createErrorDialog(nve.getMessage()).showAndWait();
         } catch (Exception e) {
-            JfxDialogUtil.createErrorDialog("Could not create the project.", e);
+            JfxDialogUtil.createErrorDialog("Could not create the project.", e).showAndWait();
             e.printStackTrace();
         }
     }

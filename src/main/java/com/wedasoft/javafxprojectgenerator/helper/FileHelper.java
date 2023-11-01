@@ -32,17 +32,16 @@ public class FileHelper {
         return copyIntoDirPath;
     }
 
-    public static Path deleteDir(
+    public static void deleteDir(
             Path pathOfDirToDelete,
             boolean throwIfDirNotExists)
             throws Exception {
 
         if (Files.isDirectory(pathOfDirToDelete)) {
-            return Files.walkFileTree(pathOfDirToDelete, new DeleteFileVisitor());
+            Files.walkFileTree(pathOfDirToDelete, new DeleteFileVisitor());
         } else if (throwIfDirNotExists) {
             throw new FileNotFoundException("The directory could not be deleted because it does not exist.");
         }
-        return null;
     }
 
 }
