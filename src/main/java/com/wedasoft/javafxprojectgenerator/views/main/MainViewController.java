@@ -1,7 +1,7 @@
 package com.wedasoft.javafxprojectgenerator.views.main;
 
 import com.wedasoft.javafxprojectgenerator.enums.ProjectType;
-import com.wedasoft.simpleJavaFxApplicationBase.sceneSwitcher.FxmlSceneControllerBase;
+import com.wedasoft.simpleJavaFxApplicationBase.sceneUtil.FxmlSceneControllerBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -109,7 +109,7 @@ public class MainViewController extends FxmlSceneControllerBase implements Initi
     }
 
     @FXML
-    public void onMenuItemHowToImportInEclipseClick(){
+    public void onMenuItemHowToImportInEclipseClick() {
         mainViewControllerService.onMenuItemHowToImportInEclipseClick();
     }
 

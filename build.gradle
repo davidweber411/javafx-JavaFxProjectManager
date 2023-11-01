@@ -46,7 +46,7 @@ dependencies {
     testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
     testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-    implementation("com.wedasoft:simplejavafxapplicationbase:1.6.0")
+    implementation("com.wedasoft:simplejavafxapplicationbase:1.7.0")
 
     implementation 'commons-io:commons-io:2.13.0'
 }
