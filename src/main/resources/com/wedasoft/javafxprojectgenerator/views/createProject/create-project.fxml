@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.wedasoft.javafxprojectgenerator.views.main.MainViewController">
+            fx:controller="com.wedasoft.javafxprojectgenerator.views.createProject.CreateProjectViewController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>

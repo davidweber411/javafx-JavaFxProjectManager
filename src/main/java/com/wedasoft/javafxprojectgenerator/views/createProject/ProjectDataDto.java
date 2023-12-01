@@ -1,4 +1,4 @@
-package com.wedasoft.javafxprojectgenerator.views.main;
+package com.wedasoft.javafxprojectgenerator.views.createProject;
 
 import com.wedasoft.javafxprojectgenerator.enums.ProjectType;
 import com.wedasoft.javafxprojectgenerator.exceptions.NotValidException;

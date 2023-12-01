@@ -18,7 +18,7 @@ ext {
     junitVersion = '5.10.0'
     assertJVersion = '3.24.2'
     lombokVersion = '1.18.28'
-    simplejavafxapplicationbaseVersion = '1.7.0'
+    simplejavafxapplicationbaseVersion = '2.0.0'
 }
 
 //noinspection GroovyUnusedAssignment

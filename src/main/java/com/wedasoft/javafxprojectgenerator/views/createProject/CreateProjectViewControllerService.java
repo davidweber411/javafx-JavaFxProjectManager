@@ -1,4 +1,4 @@
-package com.wedasoft.javafxprojectgenerator.views.main;
+package com.wedasoft.javafxprojectgenerator.views.createProject;
 
 import com.wedasoft.javafxprojectgenerator.MainApplicationLauncher;
 import com.wedasoft.javafxprojectgenerator.exceptions.NotValidException;
@@ -29,12 +29,12 @@ import static java.nio.file.Path.of;
 
 @SuppressWarnings("ClassCanBeRecord")
 @Getter
-public class MainViewControllerService {
+public class CreateProjectViewControllerService {
 
-    private final MainViewController viewController;
+    private final CreateProjectViewController viewController;
 
-    public MainViewControllerService(
-            MainViewController viewController) {
+    public CreateProjectViewControllerService(
+            CreateProjectViewController viewController) {
 
         this.viewController = viewController;
     }

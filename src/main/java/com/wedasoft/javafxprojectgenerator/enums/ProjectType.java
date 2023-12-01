@@ -1,8 +1,5 @@
 package com.wedasoft.javafxprojectgenerator.enums;
 
-import lombok.Getter;
-
-@Getter
 public enum ProjectType {
 
     GRADLE_NON_MODULAR(
@@ -16,7 +13,7 @@ public enum ProjectType {
             "/com/wedasoft/javafxprojectgenerator/zips/bmsFilesForMaven.zip",
             "JavaFxAppNonModular");
 
-    private final String uiText;
+    public final String uiText;
 
     private final String classPathOfTemplateProjectZip;
 
@@ -37,11 +34,9 @@ public enum ProjectType {
     }
 
     @SuppressWarnings("unused")
-    public static ProjectType getByValue(
-            String value) {
-
+    public static ProjectType getByValue(String value) {
         for (ProjectType projectType : ProjectType.values()) {
-            if (projectType.getUiText().equals(value)) {
+            if (projectType.uiText.equals(value)) {
                 return projectType;
             }
         }
@@ -60,4 +55,19 @@ public enum ProjectType {
         return tmpProjectName.substring(0, tmpProjectName.lastIndexOf('.'));
     }
 
+    public String getUiText() {
+        return uiText;
+    }
+
+    public String getClassPathOfTemplateProjectZip() {
+        return classPathOfTemplateProjectZip;
+    }
+
+    public String getClassPathOfBmsFilesZip() {
+        return classPathOfBmsFilesZip;
+    }
+
+    public String getTemplateProjectName() {
+        return templateProjectName;
+    }
 }

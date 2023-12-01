@@ -1,106 +1,22 @@
 package com.wedasoft.javafxprojectgenerator.views.main;
 
-import com.wedasoft.javafxprojectgenerator.enums.ProjectType;
-import com.wedasoft.simpleJavaFxApplicationBase.sceneUtil.FxmlSceneControllerBase;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
-import javafx.util.StringConverter;
-import lombok.Getter;
+import javafx.scene.layout.BorderPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-@Getter
-public class MainViewController extends FxmlSceneControllerBase implements Initializable {
+public class MainViewController implements Initializable {
 
     @FXML
-    private TextField applicationNameTextField;
-    @FXML
-    private TextField groupIdTextField;
-    @FXML
-    private TextField versionTextField;
-    @FXML
-    private ChoiceBox<ProjectType> projectTypeChoiceBox;
-    @FXML
-    private TextField destinationDirectoryTextField;
-    @FXML
-    private CheckBox usePreconfiguredDatabaseCheckbox;
-    @FXML
-    private TextField usePreconfiguredDatabaseVersionTextfield;
-    @FXML
-    private CheckBox useLibraryWedasoftCheckbox;
-    @FXML
-    private TextField useLibraryWedasoftVersionTextfield;
-    @FXML
-    private CheckBox useLibraryLombokCheckbox;
-    @FXML
-    private TextField useLibraryLombokVersionTextfield;
+    private BorderPane borderPane;
 
-    private MainViewControllerService mainViewControllerService;
-
-    @Override
-    public void initialize(
-            URL location,
-            ResourceBundle resources) {
-
-        mainViewControllerService = new MainViewControllerService(this);
-        projectTypeChoiceBox.getItems().addAll(ProjectType.values());
-        projectTypeChoiceBox.setConverter(new StringConverter<>() {
-            @Override
-            public String toString(ProjectType object) {
-                return object == null ? null : object.getUiText();
-            }
-
-            @Override
-            public ProjectType fromString(String string) {
-                return null;
-            }
-        });
-        projectTypeChoiceBox.setValue(projectTypeChoiceBox.getItems().get(0));
+    public void init() {
     }
 
     @Override
-    public void onFxmlSceneReady() {
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
-
-    @FXML
-    public void onResetButtonClick(
-            ActionEvent event) {
-
-        mainViewControllerService.onResetButtonClick(event);
-    }
-
-    @FXML
-    public void onCreateProjectButtonClick(
-            ActionEvent event) {
-
-        mainViewControllerService.onCreateProjectButtonClick(event);
-    }
-
-    @FXML
-    public void onChooseDestinationDirectoryButtonClick(
-            ActionEvent event) {
-
-        mainViewControllerService.onChooseDestinationDirectoryButtonClick(event);
-    }
-
-    @FXML
-    public void onMenuItemCloseClick() {
-        mainViewControllerService.onMenuItemCloseClick();
-    }
-
-    @FXML
-    public void onMenuItemAboutClick() {
-        mainViewControllerService.onMenuItemAboutClick();
-    }
-
-    @FXML
-    public void onMenuItemHowToImportInEclipseClick() {
-        mainViewControllerService.onMenuItemHowToImportInEclipseClick();
-    }
-
 }

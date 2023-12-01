@@ -1,4 +1,4 @@
-package com.wedasoft.javafxprojectgenerator.views.main;
+package com.wedasoft.javafxprojectgenerator.views.createProject;
 
 import org.apache.commons.io.FileUtils;
 
