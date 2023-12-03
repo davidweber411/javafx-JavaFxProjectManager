@@ -1,14 +1,14 @@
 package com.wedasoft.javafxprojectmanager.enums;
 
-public enum UsedJdk {
+public enum UsedJpackage {
 
-    WRAPPED_OPEN_JDK_17(1, "Wrapped Open JDK 17"),
-    CONFIGURE_OWN_JDK(2, "Configure own JDK");
+    FROM_WRAPPED_OPEN_JDK_17(1, "Use jPackage from wrapped Open JDK 17"),
+    FROM_CONFIGURED_JDK(2, "Use jPackage from configured JDK");
 
     private final int value;
     private final String label;
 
-    UsedJdk(int value, String label) {
+    UsedJpackage(int value, String label) {
         this.value = value;
         this.label = label;
     }

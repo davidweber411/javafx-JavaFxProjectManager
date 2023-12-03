@@ -3,7 +3,7 @@ package com.wedasoft.javafxprojectmanager.views.packageFatJarForWindows;
 import com.wedasoft.javafxprojectmanager.enums.AppTypeToCreate;
 import com.wedasoft.javafxprojectmanager.enums.MainClassReferenceType;
 import com.wedasoft.javafxprojectmanager.enums.PackageContentType;
-import com.wedasoft.javafxprojectmanager.enums.UsedJdk;
+import com.wedasoft.javafxprojectmanager.enums.UsedJpackage;
 import com.wedasoft.javafxprojectmanager.exceptions.NotValidException;
 import com.wedasoft.simpleJavaFxApplicationBase.fileSystemUtil.FileSystemUtil;
 import com.wedasoft.simpleJavaFxApplicationBase.jfxDialogs.JfxDialogUtil;
@@ -27,11 +27,11 @@ import static com.wedasoft.javafxprojectmanager.views.packageFatJarForWindows.Ap
 public class PackageFatJarForWindowsViewController {
 
     @FXML
-    private ChoiceBox<UsedJdk> chooseJdkChoiceBox;
+    private ChoiceBox<UsedJpackage> chooseOwnJpackageChoiceBox;
     @FXML
-    private Button chooseJdkButton;
+    private Button chooseOwnJpackageButton;
     @FXML
-    private TextField chooseJdkTextField;
+    private TextField chooseOwnJpackageTextField;
     @FXML
     private ChoiceBox<AppTypeToCreate> fileTypeToCreateChoiceBox;
     @FXML
@@ -76,29 +76,29 @@ public class PackageFatJarForWindowsViewController {
     }
 
     private void initChooseJdkChoiceBox() {
-        chooseJdkChoiceBox.getItems().addAll(UsedJdk.values());
-        chooseJdkChoiceBox.setConverter(new StringConverter<>() {
+        chooseOwnJpackageChoiceBox.getItems().addAll(UsedJpackage.values());
+        chooseOwnJpackageChoiceBox.setConverter(new StringConverter<>() {
             @Override
-            public String toString(UsedJdk object) {
+            public String toString(UsedJpackage object) {
                 return object.getLabel();
             }
 
             @Override
-            public UsedJdk fromString(String string) {
+            public UsedJpackage fromString(String string) {
                 return null;
             }
         });
-        chooseJdkChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
-            if (newValue.equals(UsedJdk.WRAPPED_OPEN_JDK_17)) {
-                chooseJdkButton.setDisable(true);
-                chooseJdkTextField.setText("");
-                chooseJdkTextField.setDisable(true);
-            } else if (newValue.equals(UsedJdk.CONFIGURE_OWN_JDK)) {
-                chooseJdkButton.setDisable(false);
-                chooseJdkTextField.setDisable(false);
+        chooseOwnJpackageChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+            if (newValue.equals(UsedJpackage.FROM_WRAPPED_OPEN_JDK_17)) {
+                chooseOwnJpackageButton.setDisable(true);
+                chooseOwnJpackageTextField.setText("");
+                chooseOwnJpackageTextField.setDisable(true);
+            } else if (newValue.equals(UsedJpackage.FROM_CONFIGURED_JDK)) {
+                chooseOwnJpackageButton.setDisable(false);
+                chooseOwnJpackageTextField.setDisable(false);
             }
         });
-        chooseJdkChoiceBox.setValue(UsedJdk.WRAPPED_OPEN_JDK_17);
+        chooseOwnJpackageChoiceBox.setValue(UsedJpackage.FROM_WRAPPED_OPEN_JDK_17);
     }
 
     private void initMainClassTypeChoiceBox() {
@@ -189,12 +189,12 @@ public class PackageFatJarForWindowsViewController {
         }
     }
 
-    public void onChooseJdkButtonClick() {
-        DirectoryChooser dc = new DirectoryChooser();
-        Stage actualStage = (Stage) chooseJdkButton.getScene().getWindow();
-        File file = dc.showDialog(actualStage);
+    public void onChooseOwnJpackageButtonClick() {
+        FileChooser dc = new FileChooser();
+        Stage actualStage = (Stage) chooseOwnJpackageButton.getScene().getWindow();
+        File file = dc.showOpenDialog(actualStage);
         if (file != null) {
-            chooseJdkTextField.setText(file.getAbsolutePath());
+            chooseOwnJpackageTextField.setText(file.getAbsolutePath());
         }
     }
 
@@ -268,7 +268,11 @@ public class PackageFatJarForWindowsViewController {
 
             /* create a list of separated arguments for the process builder */
             List<String> jPackageArgValueStrings = new ArrayList<>();
-            jPackageArgValueStrings.add(APP_DATA_INCLUDED_JPACKAGE_EXE_PATH.toString());
+            if (chooseOwnJpackageChoiceBox.getSelectionModel().getSelectedItem() == UsedJpackage.FROM_WRAPPED_OPEN_JDK_17) {
+                jPackageArgValueStrings.add(APP_DATA_INCLUDED_JPACKAGE_EXE_PATH.toString());
+            } else {
+                jPackageArgValueStrings.add("\"" + Path.of(chooseOwnJpackageTextField.getText()) + "\"");
+            }
             Arrays.stream(jPackageCommand.substring("jpackage".length()).split(" --"))
                     .filter(e -> !e.isBlank() && !e.isEmpty())
                     .map(e -> "--" + e)
@@ -276,6 +280,7 @@ public class PackageFatJarForWindowsViewController {
 
             /* start the creation process with process builder */
             ProcessBuilder pb = new ProcessBuilder(jPackageArgValueStrings);
+            System.out.println("pb-command: " + pb.command());
             pb.start().getInputStream().readAllBytes();
 
             JfxDialogUtil.createInformationDialog("The native application is created.").showAndWait();
