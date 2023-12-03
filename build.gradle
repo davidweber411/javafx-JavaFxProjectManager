@@ -13,7 +13,7 @@ repositories {
 }
 
 ext {
-    mainClassNameParam = 'com.wedasoft.javafxprojectgenerator.MainApplicationLauncher'
+    mainClassNameParam = 'com.wedasoft.javafxprojectmanager.MainApplicationLauncher'
     javaFxVersion = '17.0.8'
     junitVersion = '5.10.0'
     assertJVersion = '3.24.2'

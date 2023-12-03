@@ -1,0 +1,45 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- JDBC Database connection settings (creates the db with this values) -->
+        <property name="connection.driver_class">org.h2.Driver</property>
+        <property name="connection.username">sa</property>
+        <property name="connection.password">sa</property>
+
+        <!-- Database type: comment one out -->
+        <!--<property name="connection.url">jdbc:h2:mem:test
+        </property>--><!-- In memory database named "test.db" (no file on your computer) -->
+        <property name="connection.url">jdbc:h2:file:~/yourCompany/yourAppName/db/database;AUTO_SERVER=TRUE
+        </property><!-- Use a database named "database.db" located at "user-home/yourCompany/yourAppName/db/database.db" -->
+
+        <!-- Other database settings -->
+        <property name="connection.pool_size">1</property><!-- JDBC connection pool settings -->
+        <property name="dialect">org.hibernate.dialect.H2Dialect</property><!-- Select our SQL dialect -->
+        <property name="show_sql">true</property><!-- Echo the SQL to stdout -->
+        <property name="current_session_context_class">thread</property><!-- Set the current session context -->
+
+        <!-- Database actions on startup -->
+        <property name="hbm2ddl.auto">update</property>
+        <!-- Other possible values: -->
+        <!-- none:         does nothing with the schema/database. -->
+        <!-- validate:     database schema will be validated using the entity mappings. -->
+        <!-- create-only:  database schema creation will be generated. -->
+        <!-- drop:         database schema will be dropped. -->
+        <!-- create:       database schema will first be dropped and then created afterward. -->
+        <!-- create-drop:  database schema will be created and will be dropped when the SessionFactory is closed explicitly (application stops). -->
+        <!-- update:       database schema will be updated by comparing the existing database schema with the entity mappings. -->
+
+        <!-- dbcp connection pool configuration -->
+        <property name="hibernate.dbcp.initialSize">5</property>
+        <property name="hibernate.dbcp.maxTotal">20</property>
+        <property name="hibernate.dbcp.maxIdle">10</property>
+        <property name="hibernate.dbcp.minIdle">5</property>
+        <property name="hibernate.dbcp.maxWaitMillis">-1</property>
+
+        <!-- mappings from your classes to hibernate/database -->
+        <mapping class="your.groupId.javafxappnonmodular.entities.UserAccount"/>
+    </session-factory>
+</hibernate-configuration>
