@@ -2,9 +2,8 @@ package com.wedasoft.javafxprojectmanager.views.createProject;
 
 import com.wedasoft.javafxprojectmanager.MainApplicationLauncher;
 import com.wedasoft.javafxprojectmanager.exceptions.NotValidException;
-import com.wedasoft.javafxprojectmanager.helper.DialogHelper;
-import com.wedasoft.javafxprojectmanager.helper.FileHelper;
 import com.wedasoft.javafxprojectmanager.services.ZipService;
+import com.wedasoft.simpleJavaFxApplicationBase.fileSystemUtil.FileSystemUtil;
 import com.wedasoft.simpleJavaFxApplicationBase.jfxDialogs.JfxDialogUtil;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -112,9 +111,9 @@ public class CreateProjectViewControllerService {
 
         Path bmsFilesZipDir = projectDir.resolve(projectDataDto.getProjectType().getExtractedBmsFilesDirName());
         if (Files.exists(bmsFilesZipDir)) {
-            FileHelper.copyDirContent(bmsFilesZipDir, bmsFilesZipDir.getParent(), true);
+            FileSystemUtil.copyDirContent(bmsFilesZipDir, bmsFilesZipDir.getParent(), true);
         }
-        FileHelper.deleteDir(bmsFilesZipDir, true);
+        FileSystemUtil.deleteDir(bmsFilesZipDir);
     }
 
     private void modifyProjectTemplateFiles(
@@ -172,14 +171,15 @@ public class CreateProjectViewControllerService {
     }
 
     public void onMenuItemHowToImportInEclipseClick() {
-        DialogHelper.displayDialogWithColumns("About", 3, List.of(
-                new Label("Step 1: Start the import wizard"),
-                new Label("Step 2: Select the build management system"),
-                new Label("Step 3: 'Next' and continue the installer wizard"),
-                new ImageView(Objects.requireNonNull(getClass().getResource(
-                        "/com/wedasoft/javafxprojectmanager/images/import-in-eclipse-1.jpg")).toString()),
-                new ImageView(Objects.requireNonNull(getClass().getResource(
-                        "/com/wedasoft/javafxprojectmanager/images/import-in-eclipse-2.jpg")).toString())));
+        JfxDialogUtil.createDialogWithColumns("About", 3, 10, List.of(
+                        new Label("Step 1: Start the import wizard"),
+                        new Label("Step 2: Select the build management system"),
+                        new Label("Step 3: 'Next' and continue the installer wizard"),
+                        new ImageView(Objects.requireNonNull(getClass().getResource(
+                                "/com/wedasoft/javafxprojectmanager/images/import-in-eclipse-1.jpg")).toString()),
+                        new ImageView(Objects.requireNonNull(getClass().getResource(
+                                "/com/wedasoft/javafxprojectmanager/images/import-in-eclipse-2.jpg")).toString())))
+                .showAndWait();
     }
 
 }
