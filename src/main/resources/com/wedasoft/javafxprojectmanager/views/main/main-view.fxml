@@ -13,7 +13,7 @@
             <children>
                 <VBox spacing="10.0">
                     <children>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCreateProjectButtonClick" text="Create project &gt;" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCreateJavaFxProjectButtonClick" text="Create project &gt;" />
                         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPackageForWindowsButtonClick" text="Package fat JAR for Windows &gt;" />
                         <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAboutButtonClick" text="About &gt;" />
                   <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit &gt;" />

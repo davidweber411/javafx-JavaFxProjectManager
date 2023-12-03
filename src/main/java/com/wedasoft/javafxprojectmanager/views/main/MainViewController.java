@@ -16,10 +16,10 @@ public class MainViewController {
     private BorderPane borderPane;
 
     public void init() throws IOException {
-        onCreateProjectButtonClick();
+        onCreateJavaFxProjectButtonClick();
     }
 
-    public void onCreateProjectButtonClick() throws IOException {
+    public void onCreateJavaFxProjectButtonClick() throws IOException {
         HelperFunctions.switchBorderPaneCenter(
                 borderPane,
                 getClass().getResource("/com/wedasoft/javafxprojectmanager/views/createProject/create-project.fxml"),
