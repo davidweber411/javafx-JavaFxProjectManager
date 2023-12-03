@@ -27,11 +27,11 @@ import static com.wedasoft.javafxprojectmanager.views.packageFatJarForWindows.Ap
 public class PackageFatJarForWindowsViewController {
 
     @FXML
-    private ChoiceBox<UsedJpackage> chooseOwnJpackageChoiceBox;
+    private ChoiceBox<UsedJpackage> chooseOwnJpackageExeChoiceBox;
     @FXML
-    private Button chooseOwnJpackageButton;
+    private Button chooseOwnJpackageExeButton;
     @FXML
-    private TextField chooseOwnJpackageTextField;
+    private TextField chooseOwnJpackageExeTextField;
     @FXML
     private ChoiceBox<AppTypeToCreate> fileTypeToCreateChoiceBox;
     @FXML
@@ -76,8 +76,8 @@ public class PackageFatJarForWindowsViewController {
     }
 
     private void initChooseJdkChoiceBox() {
-        chooseOwnJpackageChoiceBox.getItems().addAll(UsedJpackage.values());
-        chooseOwnJpackageChoiceBox.setConverter(new StringConverter<>() {
+        chooseOwnJpackageExeChoiceBox.getItems().addAll(UsedJpackage.values());
+        chooseOwnJpackageExeChoiceBox.setConverter(new StringConverter<>() {
             @Override
             public String toString(UsedJpackage object) {
                 return object.getLabel();
@@ -88,17 +88,17 @@ public class PackageFatJarForWindowsViewController {
                 return null;
             }
         });
-        chooseOwnJpackageChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+        chooseOwnJpackageExeChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
             if (newValue.equals(UsedJpackage.FROM_WRAPPED_OPEN_JDK_17)) {
-                chooseOwnJpackageButton.setDisable(true);
-                chooseOwnJpackageTextField.setText("");
-                chooseOwnJpackageTextField.setDisable(true);
+                chooseOwnJpackageExeButton.setDisable(true);
+                chooseOwnJpackageExeTextField.setText("");
+                chooseOwnJpackageExeTextField.setDisable(true);
             } else if (newValue.equals(UsedJpackage.FROM_CONFIGURED_JDK)) {
-                chooseOwnJpackageButton.setDisable(false);
-                chooseOwnJpackageTextField.setDisable(false);
+                chooseOwnJpackageExeButton.setDisable(false);
+                chooseOwnJpackageExeTextField.setDisable(false);
             }
         });
-        chooseOwnJpackageChoiceBox.setValue(UsedJpackage.FROM_WRAPPED_OPEN_JDK_17);
+        chooseOwnJpackageExeChoiceBox.setValue(UsedJpackage.FROM_WRAPPED_OPEN_JDK_17);
     }
 
     private void initMainClassTypeChoiceBox() {
@@ -189,12 +189,12 @@ public class PackageFatJarForWindowsViewController {
         }
     }
 
-    public void onChooseOwnJpackageButtonClick() {
+    public void onChooseOwnJpackageExeButtonClick() {
         FileChooser dc = new FileChooser();
-        Stage actualStage = (Stage) chooseOwnJpackageButton.getScene().getWindow();
+        Stage actualStage = (Stage) chooseOwnJpackageExeButton.getScene().getWindow();
         File file = dc.showOpenDialog(actualStage);
         if (file != null) {
-            chooseOwnJpackageTextField.setText(file.getAbsolutePath());
+            chooseOwnJpackageExeTextField.setText(file.getAbsolutePath());
         }
     }
 
@@ -268,10 +268,10 @@ public class PackageFatJarForWindowsViewController {
 
             /* create a list of separated arguments for the process builder */
             List<String> jPackageArgValueStrings = new ArrayList<>();
-            if (chooseOwnJpackageChoiceBox.getSelectionModel().getSelectedItem() == UsedJpackage.FROM_WRAPPED_OPEN_JDK_17) {
+            if (chooseOwnJpackageExeChoiceBox.getSelectionModel().getSelectedItem() == UsedJpackage.FROM_WRAPPED_OPEN_JDK_17) {
                 jPackageArgValueStrings.add(APP_DATA_INCLUDED_JPACKAGE_EXE_PATH.toString());
             } else {
-                jPackageArgValueStrings.add("\"" + Path.of(chooseOwnJpackageTextField.getText()) + "\"");
+                jPackageArgValueStrings.add("\"" + Path.of(chooseOwnJpackageExeTextField.getText()) + "\"");
             }
             Arrays.stream(jPackageCommand.substring("jpackage".length()).split(" --"))
                     .filter(e -> !e.isBlank() && !e.isEmpty())

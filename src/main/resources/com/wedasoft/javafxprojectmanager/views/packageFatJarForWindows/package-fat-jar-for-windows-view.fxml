@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
@@ -19,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wedasoft.javafxprojectmanager.views.packageFatJarForWindows.PackageFatJarForWindowsViewController">
+<BorderPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wedasoft.javafxprojectmanager.views.packageFatJarForWindows.PackageFatJarForWindowsViewController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
@@ -34,7 +35,7 @@
     <bottom>
         <VBox spacing="10.0" BorderPane.alignment="CENTER">
             <children>
-                <Label disable="true" text="Creation settings:" underline="true" />
+            <Separator prefWidth="200.0" />
                 <HBox alignment="CENTER_LEFT" spacing="5.0">
                     <children>
                         <Button mnemonicParsing="false" onAction="#onCreateJPackageCommandButtonClick" text="Create jPackage command" />
@@ -50,103 +51,140 @@
     </bottom>
     <center>
         <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
-            <content>
-                <GridPane hgap="5.0" vgap="5.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" />
-                        <ColumnConstraints hgrow="ALWAYS" />
-                        <ColumnConstraints hgrow="NEVER" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                    <children>
-                        <TextField fx:id="appNameTextField" promptText="e.g. MyAppName" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-                        <Label text="Application type to create (--type):" wrapText="true" GridPane.rowIndex="2" />
-                        <Label text="Application name (--name):" wrapText="true" GridPane.rowIndex="10" />
-                        <ChoiceBox fx:id="fileTypeToCreateChoiceBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="Path to main JAR file (--main-jar):" wrapText="true" GridPane.rowIndex="6" />
-                        <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                            <children>
-                                <Button mnemonicParsing="false" onAction="#onPathToMainJarFileChooseButtonClick" text="Choose..." />
-                                <TextField fx:id="mainJarFileNameTextField" promptText="Could be your Desktop/Files/abc.jar" HBox.hgrow="ALWAYS" />
-                            </children>
-                        </HBox>
-                        <Label text="Output file destination directory (--dest): " wrapText="true" GridPane.rowIndex="3" />
-                        <Label text="Application icon (--icon):" wrapText="true" GridPane.rowIndex="12" />
-                        <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                            <children>
-                                <Button mnemonicParsing="false" onAction="#onOutputFileDestinationDirChooseButtonClick" text="Choose..." />
-                                <TextField fx:id="outputFileDestinationDirectoryTextField" promptText="e.g. Could be your desktop..." HBox.hgrow="ALWAYS" />
-                            </children>
-                        </HBox>
-                        <TextField fx:id="mainClassNameTextField" promptText="e.g. com.wedasoft.coolApp.CoolAppMain" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="12">
-                            <children>
-                                <Button mnemonicParsing="false" onAction="#onApplicationIconChooseButtonClick" text="Choose..." />
-                                <TextField fx:id="iconFilePathTextField" promptText="e.g. .../iconForMyApp.ico" HBox.hgrow="ALWAYS" />
-                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                            <children>
-                                <Button fx:id="directoryWithAllFilesToPackageButton" mnemonicParsing="false" onAction="#onAllFilesInSelectedDirectoryChooseButtonClick" text="Choose..." />
-                                <TextField fx:id="directoryWithAllFilesToPackageTextField" promptText="Could be your Desktop/Files" HBox.hgrow="ALWAYS" />
-                            </children>
-                        </HBox>
-                        <Label text="Application version (--app-version):" wrapText="true" GridPane.rowIndex="11" />
-                        <TextField fx:id="appVersionTextField" promptText="e.g. 1.2" text="1.0" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                        <CheckBox fx:id="showDirectoryChooserDialogForInstallationCheckbox" mnemonicParsing="false" selected="true" text="Show a dialog to enable the user to choose a directory in which the product is installed (--win-dir-chooser)" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="13" />
-                        <CheckBox fx:id="addApplicationToSystemMenuCheckbox" mnemonicParsing="false" selected="true" text="Add the application to the system menu (--win-menu)" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="15" />
-                        <CheckBox fx:id="createDesktopShortcutCheckbox" mnemonicParsing="false" selected="true" text="Create a desktop shortcut for the application (--win-shortcut)" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="14" />
-                        <Button disable="true" mnemonicParsing="false" text="Help!" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <Button disable="true" mnemonicParsing="false" text="Help!" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                        <Button disable="true" mnemonicParsing="false" text="Help!" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <Button disable="true" mnemonicParsing="false" text="Help!" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-                        <Button disable="true" mnemonicParsing="false" text="Help!" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-                        <Button disable="true" mnemonicParsing="false" text="Help!" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="12" />
-                        <Button disable="true" mnemonicParsing="false" text="Help!" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="10" />
-                        <Button disable="true" mnemonicParsing="false" text="Help!" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="11" />
-                        <Button disable="true" mnemonicParsing="false" text="Help!" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="13" />
-                        <Button disable="true" mnemonicParsing="false" text="Help!" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="14" />
-                        <Button disable="true" mnemonicParsing="false" text="Help!" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="15" />
-                        <Label text="Create a native executable application for Windows" underline="true" wrapText="true" GridPane.columnSpan="3">
-                            <font>
-                                <Font name="System Bold" size="14.0" />
-                            </font>
-                        </Label>
-                        <Label disable="true" text="Application specific settings:" underline="true" GridPane.columnSpan="3" GridPane.rowIndex="9" />
-                        <Label disable="true" text="General creation settings:" underline="true" wrapText="true" GridPane.rowIndex="1" />
-                        <Label disable="true" text="File packaging settings:" underline="true" wrapText="true" GridPane.rowIndex="4" />
-                        <ChoiceBox fx:id="filePackageTypeChoiceBox" maxWidth="1.7976931348623157E308" GridPane.rowIndex="5" />
-                        <ChoiceBox fx:id="mainClassTypeChoiceBox" maxWidth="1.7976931348623157E308" GridPane.rowIndex="8" />
-                        <Label disable="true" text="Main class settings:" underline="true" wrapText="true" GridPane.rowIndex="7" />
-                    </children>
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                    <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </padding>
-                </GridPane>
-            </content>
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </BorderPane.margin>
+         <content>
+            <VBox spacing="10.0">
+               <children>
+                  <Label text="Package fat JAR for Windows (Create a native executable application for Windows)">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Separator prefWidth="200.0" />
+                      <GridPane hgap="5.0">
+                          <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" />
+                              <ColumnConstraints hgrow="ALWAYS" />
+                        <ColumnConstraints />
+                          </columnConstraints>
+                          <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                          <children>
+                              <TextField fx:id="appNameTextField" promptText="e.g. MyAppName" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+                              <Label text="Application type to create (--type):" wrapText="true" GridPane.rowIndex="5" />
+                              <Label text="Application name (--name):" wrapText="true" GridPane.rowIndex="16" />
+                              <ChoiceBox fx:id="fileTypeToCreateChoiceBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                              <Label text="Path to main JAR file (--main-jar):" wrapText="true" GridPane.rowIndex="10" />
+                              <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                  <children>
+                                      <Button mnemonicParsing="false" onAction="#onPathToMainJarFileChooseButtonClick" text="Choose..." />
+                                      <TextField fx:id="mainJarFileNameTextField" promptText="Could be your Desktop/Files/abc.jar" HBox.hgrow="ALWAYS" />
+                                  </children>
+                              </HBox>
+                              <Label text="Output file destination directory (--dest): " wrapText="true" GridPane.rowIndex="6" />
+                              <Label text="Application icon (--icon):" wrapText="true" GridPane.rowIndex="18" />
+                              <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                  <children>
+                                      <Button mnemonicParsing="false" onAction="#onOutputFileDestinationDirChooseButtonClick" text="Choose..." />
+                                      <TextField fx:id="outputFileDestinationDirectoryTextField" promptText="e.g. Could be your desktop..." HBox.hgrow="ALWAYS" />
+                                  </children>
+                              </HBox>
+                              <TextField fx:id="mainClassNameTextField" promptText="e.g. com.wedasoft.coolApp.CoolAppMain" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                              <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="18">
+                                  <children>
+                                      <Button mnemonicParsing="false" onAction="#onApplicationIconChooseButtonClick" text="Choose..." />
+                                      <TextField fx:id="iconFilePathTextField" promptText="e.g. .../iconForMyApp.ico" HBox.hgrow="ALWAYS" />
+                                  </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                                  <children>
+                                      <Button fx:id="directoryWithAllFilesToPackageButton" mnemonicParsing="false" onAction="#onAllFilesInSelectedDirectoryChooseButtonClick" text="Choose..." />
+                                      <TextField fx:id="directoryWithAllFilesToPackageTextField" promptText="Could be your Desktop/Files" HBox.hgrow="ALWAYS" />
+                                  </children>
+                              </HBox>
+                              <Label text="Application version (--app-version):" wrapText="true" GridPane.rowIndex="17" />
+                              <TextField fx:id="appVersionTextField" promptText="e.g. 1.2" text="1.0" GridPane.columnIndex="1" GridPane.rowIndex="17" />
+                              <CheckBox fx:id="showDirectoryChooserDialogForInstallationCheckbox" mnemonicParsing="false" selected="true" text="Show a dialog to enable the user to choose a directory in which the product is installed (--win-dir-chooser)" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="19" />
+                              <CheckBox fx:id="addApplicationToSystemMenuCheckbox" mnemonicParsing="false" selected="true" text="Add the application to the system menu (--win-menu)" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="21" />
+                              <CheckBox fx:id="createDesktopShortcutCheckbox" mnemonicParsing="false" selected="true" text="Create a desktop shortcut for the application (--win-shortcut)" wrapText="true" GridPane.columnSpan="2" GridPane.rowIndex="20" />
+                              <Label text="Application specific settings:" underline="true" GridPane.columnSpan="3" GridPane.rowIndex="15">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                              <Label text="General creation settings" underline="true" wrapText="true" GridPane.rowIndex="4">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                              <Label text="File packaging settings" underline="true" wrapText="true" GridPane.rowIndex="8">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                              <ChoiceBox fx:id="filePackageTypeChoiceBox" maxWidth="1.7976931348623157E308" GridPane.rowIndex="9" />
+                              <ChoiceBox fx:id="mainClassTypeChoiceBox" maxWidth="1.7976931348623157E308" GridPane.rowIndex="13" />
+                              <Label text="Main class settings" underline="true" wrapText="true" GridPane.rowIndex="12">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Separator prefWidth="200.0" GridPane.rowIndex="7" />
+                        <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <Separator prefWidth="200.0" GridPane.rowIndex="11" />
+                        <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                        <Separator prefWidth="200.0" GridPane.rowIndex="14" />
+                        <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                        <Label text="Use jPackage from this JDK:" GridPane.rowIndex="1" />
+                        <ChoiceBox fx:id="chooseOwnJpackageExeChoiceBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <Button fx:id="chooseOwnJpackageExeButton" mnemonicParsing="false" onAction="#onChooseOwnJpackageExeButtonClick" text="Choose..." />
+                              <TextField fx:id="chooseOwnJpackageExeTextField" promptText="e.g. path to your jdk" HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+                        <Separator prefWidth="200.0" GridPane.rowIndex="3" />
+                        <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="JDK settings" underline="true" wrapText="true">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                          </children>
+                          <opaqueInsets>
+                              <Insets />
+                          </opaqueInsets>
+                      </GridPane>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </content>
         </ScrollPane>
     </center>
 </BorderPane>
