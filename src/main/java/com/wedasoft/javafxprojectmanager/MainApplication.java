@@ -2,6 +2,7 @@ package com.wedasoft.javafxprojectmanager;
 
 import com.wedasoft.javafxprojectmanager.views.main.MainViewController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -18,6 +19,10 @@ public class MainApplication extends Application {
         MainViewController controller = fxmlLoader.getController();
         controller.init();
         stage.setTitle("JavaFX project manager");
+        stage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
         stage.setScene(scene);
         stage.show();
     }

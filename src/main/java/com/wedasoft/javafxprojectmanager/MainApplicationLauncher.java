@@ -36,15 +36,17 @@ public class MainApplicationLauncher {
         JLabel label = new JLabel("Please wait...", SwingConstants.CENTER);
         label.setFont(new Font("arial", PLAIN, 24));
         panel.add(label, BorderLayout.CENTER);
+        panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
         splashscreenDialog.setLocationRelativeTo(null);
-        splashscreenDialog.setTitle("Please wait...");
+        splashscreenDialog.setTitle("Please wait ...");
         splashscreenDialog.add(panel, BorderLayout.CENTER);
         splashscreenDialog.setUndecorated(true);
         splashscreenDialog.setResizable(false);
         splashscreenDialog.pack();
         splashscreenDialog.setLocationRelativeTo(null);
         splashscreenDialog.setVisible(true);
+        splashscreenDialog.setDefaultCloseOperation(0);
     }
 
     private static void unzipWrappedJdk17() {
