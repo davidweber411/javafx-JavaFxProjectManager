@@ -4,19 +4,47 @@ import com.wedasoft.javafxprojectmanager.helper.ZipHelper;
 import com.wedasoft.simpleJavaFxApplicationBase.fileSystemUtil.FileSystemUtil;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 
 import static com.wedasoft.javafxprojectmanager.views.packageFatJarForWindows.ApplicationPaths.*;
+import static java.awt.Font.PLAIN;
 import static java.nio.file.Path.of;
 
 public class MainApplicationLauncher {
 
+    private static JDialog splashscreenDialog;
+
     public static void main(String[] args) {
+        createAndShowSplashscreenDialog();
+
         createAppDataDirs();
         unzipWrappedJdk17();
+        splashscreenDialog.setVisible(false);
 
         MainApplication.main(args);
+    }
+
+    private static void createAndShowSplashscreenDialog() {
+        splashscreenDialog = new JDialog();
+
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(400, 200));
+        panel.setLayout(new BorderLayout());
+
+        JLabel label = new JLabel("Please wait...", SwingConstants.CENTER);
+        label.setFont(new Font("arial", PLAIN, 24));
+        panel.add(label, BorderLayout.CENTER);
+
+        splashscreenDialog.setLocationRelativeTo(null);
+        splashscreenDialog.setTitle("Please wait...");
+        splashscreenDialog.add(panel, BorderLayout.CENTER);
+        splashscreenDialog.setUndecorated(true);
+        splashscreenDialog.setResizable(false);
+        splashscreenDialog.pack();
+        splashscreenDialog.setLocationRelativeTo(null);
+        splashscreenDialog.setVisible(true);
     }
 
     private static void unzipWrappedJdk17() {
