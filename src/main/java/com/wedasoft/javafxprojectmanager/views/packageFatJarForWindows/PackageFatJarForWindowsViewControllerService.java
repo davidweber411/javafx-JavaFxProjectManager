@@ -50,6 +50,13 @@ public class PackageFatJarForWindowsViewControllerService {
                 ? "\"" + APP_DATA_INCLUDED_JPACKAGE_EXE_PATH + "\""
                 : "\"" + Path.of(usedJpackagePath) + "\"");
 
+        if (usedJpackage == UsedJpackage.FROM_CONFIGURED_JDK && usedJpackagePath.isBlank()) {
+            throw new NotValidException("You must specify the location of your wished jpackage.exe.");
+        }
+
+        if (typeArg.isBlank()) {
+            throw new NotValidException("You must enter an application type.");
+        }
         jpc.setTypeArg(typeArg);
 
         if (destArg.isEmpty()) {

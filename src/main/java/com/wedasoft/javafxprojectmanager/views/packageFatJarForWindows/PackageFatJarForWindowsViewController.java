@@ -240,7 +240,6 @@ public class PackageFatJarForWindowsViewController {
             jPackageCommandTextArea.setText(jPackageCommand.getCompleteCommandAsString());
 
             ProcessBuilder pb = new ProcessBuilder(jPackageCommand.getCompleteCommandAsList());
-            System.out.println("pb-command: " + pb.command());
             pb.start().getInputStream().readAllBytes();
 
             JfxDialogUtil.createInformationDialog("The native application is created.").showAndWait();
