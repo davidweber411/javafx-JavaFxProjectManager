@@ -31,8 +31,6 @@ public class MainViewController {
                 borderPane,
                 getClass().getResource("/com/wedasoft/javafxprojectmanager/views/packageFatJarForWindows/package-fat-jar-for-windows-view.fxml"),
                 controller -> ((PackageFatJarForWindowsViewController) controller).init());
-        borderPane.getScene().getWindow().sizeToScene();
-        borderPane.getScene().getWindow().centerOnScreen();
     }
 
     public void onAboutButtonClick() throws IOException {

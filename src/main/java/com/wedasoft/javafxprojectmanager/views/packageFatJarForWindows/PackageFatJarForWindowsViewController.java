@@ -3,6 +3,7 @@ package com.wedasoft.javafxprojectmanager.views.packageFatJarForWindows;
 import com.wedasoft.javafxprojectmanager.enums.AppTypeToCreate;
 import com.wedasoft.javafxprojectmanager.enums.MainClassReferenceType;
 import com.wedasoft.javafxprojectmanager.enums.PackageContentType;
+import com.wedasoft.javafxprojectmanager.enums.UsedJdk;
 import com.wedasoft.javafxprojectmanager.exceptions.NotValidException;
 import com.wedasoft.simpleJavaFxApplicationBase.fileSystemUtil.FileSystemUtil;
 import com.wedasoft.simpleJavaFxApplicationBase.jfxDialogs.JfxDialogUtil;
@@ -25,6 +26,12 @@ import static com.wedasoft.javafxprojectmanager.views.packageFatJarForWindows.Ap
 
 public class PackageFatJarForWindowsViewController {
 
+    @FXML
+    private ChoiceBox<UsedJdk> chooseJdkChoiceBox;
+    @FXML
+    private Button chooseJdkButton;
+    @FXML
+    private TextField chooseJdkTextField;
     @FXML
     private ChoiceBox<AppTypeToCreate> fileTypeToCreateChoiceBox;
     @FXML
@@ -58,6 +65,7 @@ public class PackageFatJarForWindowsViewController {
 
     public void init() {
         try {
+            initChooseJdkChoiceBox();
             initFileTypeToCreateChoiceBox();
             initPackageTypeChoiceBox();
             initMainClassTypeChoiceBox();
@@ -65,6 +73,32 @@ public class PackageFatJarForWindowsViewController {
             e.printStackTrace();
             JfxDialogUtil.createErrorDialog("An error occured.", e);
         }
+    }
+
+    private void initChooseJdkChoiceBox() {
+        chooseJdkChoiceBox.getItems().addAll(UsedJdk.values());
+        chooseJdkChoiceBox.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(UsedJdk object) {
+                return object.getLabel();
+            }
+
+            @Override
+            public UsedJdk fromString(String string) {
+                return null;
+            }
+        });
+        chooseJdkChoiceBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+            if (newValue.equals(UsedJdk.WRAPPED_OPEN_JDK_17)) {
+                chooseJdkButton.setDisable(true);
+                chooseJdkTextField.setText("");
+                chooseJdkTextField.setDisable(true);
+            } else if (newValue.equals(UsedJdk.CONFIGURE_OWN_JDK)) {
+                chooseJdkButton.setDisable(false);
+                chooseJdkTextField.setDisable(false);
+            }
+        });
+        chooseJdkChoiceBox.setValue(UsedJdk.WRAPPED_OPEN_JDK_17);
     }
 
     private void initMainClassTypeChoiceBox() {
