@@ -4,6 +4,7 @@ import com.wedasoft.javafxprojectgenerator.helper.HelperFunctions;
 import com.wedasoft.javafxprojectgenerator.views.about.AboutViewController;
 import com.wedasoft.javafxprojectgenerator.views.createProject.CreateProjectViewController;
 import com.wedasoft.javafxprojectgenerator.views.exit.ExitViewController;
+import com.wedasoft.javafxprojectgenerator.views.packageFatJarForWindows.PackageFatJarForWindowsViewController;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 
@@ -26,10 +27,10 @@ public class MainViewController {
     }
 
     public void onPackageForWindowsButtonClick() throws IOException {
-        //        HelperFunctions.switchBorderPaneCenter(
-        //                borderPane,
-        //                getClass().getResource("/com/wedasoft/javafxprojectgenerator/views/createProject/create-project.fxml"),
-        //                controller -> ((CreateProjectViewController) controller).init());
+        HelperFunctions.switchBorderPaneCenter(
+                borderPane,
+                getClass().getResource("/com/wedasoft/javafxprojectgenerator/views/packageFatJarForWindows/package-fat-jar-for-windows-view.fxml"),
+                controller -> ((PackageFatJarForWindowsViewController) controller).init());
     }
 
     public void onAboutButtonClick() throws IOException {
