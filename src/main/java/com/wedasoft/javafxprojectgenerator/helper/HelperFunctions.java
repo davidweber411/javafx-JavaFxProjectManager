@@ -3,7 +3,10 @@ package com.wedasoft.javafxprojectgenerator.helper;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.function.Consumer;
 
@@ -33,6 +36,10 @@ public class HelperFunctions {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    public static void openUrlInBrowser(String url) throws URISyntaxException, IOException {
+        Desktop.getDesktop().browse(new URI(url));
     }
 
 }
