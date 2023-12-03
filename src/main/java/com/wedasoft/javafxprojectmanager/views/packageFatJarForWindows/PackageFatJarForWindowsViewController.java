@@ -16,12 +16,7 @@ import javafx.util.StringConverter;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
-import static com.wedasoft.javafxprojectmanager.views.packageFatJarForWindows.ApplicationPaths.APP_DATA_INCLUDED_JPACKAGE_EXE_PATH;
 import static com.wedasoft.javafxprojectmanager.views.packageFatJarForWindows.ApplicationPaths.APP_DATA_TMP_PATH;
 
 public class PackageFatJarForWindowsViewController {
@@ -225,8 +220,45 @@ public class PackageFatJarForWindowsViewController {
         }
     }
 
-    private String createJPackageCommand() throws NotValidException {
-        return PackageFatJarForWindowsViewControllerService.createJPackageCommandString(
+    public void onCreateJPackageCommandButtonClick() {
+        try {
+            jPackageCommandTextArea.setText(createJpackageCommand().getCompleteCommandAsString());
+        } catch (Exception nve) {
+            jPackageCommandTextArea.setText("");
+            JfxDialogUtil.createErrorDialog(nve.getMessage()).showAndWait();
+        }
+    }
+
+    public void onCreateNativeApplicationButtonClick() {
+        try {
+            if (filePackageTypeChoiceBox.getSelectionModel().getSelectedItem().equals(PackageContentType.SINGLE_JAR_ONLY)) {
+                FileSystemUtil.clearDir(APP_DATA_TMP_PATH);
+                FileSystemUtil.copyFile(Path.of(mainJarFileNameTextField.getText()), APP_DATA_TMP_PATH, true);
+            }
+
+            JPackageCommand jPackageCommand = createJpackageCommand();
+            jPackageCommandTextArea.setText(jPackageCommand.getCompleteCommandAsString());
+
+            ProcessBuilder pb = new ProcessBuilder(jPackageCommand.getCompleteCommandAsList());
+            System.out.println("pb-command: " + pb.command());
+            pb.start().getInputStream().readAllBytes();
+
+            JfxDialogUtil.createInformationDialog("The native application is created.").showAndWait();
+
+            if (filePackageTypeChoiceBox.getSelectionModel().getSelectedItem().equals(PackageContentType.SINGLE_JAR_ONLY)) {
+                FileSystemUtil.clearDir(APP_DATA_TMP_PATH);
+            }
+        } catch (NotValidException nve) {
+            JfxDialogUtil.createErrorDialog(nve.getMessage()).showAndWait();
+        } catch (Exception e) {
+            JfxDialogUtil.createErrorDialog("An error occurred while creating a native application.", e).showAndWait();
+        }
+    }
+
+    private JPackageCommand createJpackageCommand() throws Exception {
+        return PackageFatJarForWindowsViewControllerService.createJPackageCommand(
+                chooseOwnJpackageExeChoiceBox.getSelectionModel().getSelectedItem(),
+                chooseOwnJpackageExeTextField.getText(),
                 fileTypeToCreateChoiceBox.getValue().getJPackageArgumentValue(),
                 outputFileDestinationDirectoryTextField.getText(),
                 mainJarFileNameTextField.getText(),
@@ -241,59 +273,6 @@ public class PackageFatJarForWindowsViewController {
                 addApplicationToSystemMenuCheckbox.isSelected(),
                 mainClassTypeChoiceBox.getSelectionModel().getSelectedItem(),
                 fileTypeToCreateChoiceBox.getSelectionModel().getSelectedItem());
-    }
-
-    public void onCreateJPackageCommandButtonClick() {
-        try {
-            jPackageCommandTextArea.setText(createJPackageCommand());
-        } catch (NotValidException nve) {
-            jPackageCommandTextArea.setText("");
-            JfxDialogUtil.createErrorDialog(nve.getMessage()).showAndWait();
-        }
-    }
-
-    public void onCreateNativeApplicationButtonClick() {
-        try {
-            String jPackageCommand = createJPackageCommand();
-            if (jPackageCommand == null || jPackageCommand.isEmpty()) {
-                return;
-            }
-            jPackageCommandTextArea.setText(jPackageCommand);
-
-            /* prepare environment for single jar packaging mode */
-            if (filePackageTypeChoiceBox.getSelectionModel().getSelectedItem().equals(PackageContentType.SINGLE_JAR_ONLY)) {
-                FileSystemUtil.clearDir(APP_DATA_TMP_PATH);
-                FileSystemUtil.copyFile(Path.of(mainJarFileNameTextField.getText()), APP_DATA_TMP_PATH, true);
-            }
-
-            /* create a list of separated arguments for the process builder */
-            List<String> jPackageArgValueStrings = new ArrayList<>();
-            if (chooseOwnJpackageExeChoiceBox.getSelectionModel().getSelectedItem() == UsedJpackage.FROM_WRAPPED_OPEN_JDK_17) {
-                jPackageArgValueStrings.add(APP_DATA_INCLUDED_JPACKAGE_EXE_PATH.toString());
-            } else {
-                jPackageArgValueStrings.add("\"" + Path.of(chooseOwnJpackageExeTextField.getText()) + "\"");
-            }
-            Arrays.stream(jPackageCommand.substring("jpackage".length()).split(" --"))
-                    .filter(e -> !e.isBlank() && !e.isEmpty())
-                    .map(e -> "--" + e)
-                    .forEach((e) -> Collections.addAll(jPackageArgValueStrings, e.split(" ", 2)));
-
-            /* start the creation process with process builder */
-            ProcessBuilder pb = new ProcessBuilder(jPackageArgValueStrings);
-            System.out.println("pb-command: " + pb.command());
-            pb.start().getInputStream().readAllBytes();
-
-            JfxDialogUtil.createInformationDialog("The native application is created.").showAndWait();
-
-            /* clear environment for single jar packaging mode */
-            if (filePackageTypeChoiceBox.getSelectionModel().getSelectedItem().equals(PackageContentType.SINGLE_JAR_ONLY)) {
-                FileSystemUtil.clearDir(APP_DATA_TMP_PATH);
-            }
-        } catch (NotValidException nve) {
-            JfxDialogUtil.createErrorDialog(nve.getMessage()).showAndWait();
-        } catch (Exception e) {
-            JfxDialogUtil.createErrorDialog("An error occurred while creating a native application.", e).showAndWait();
-        }
     }
 
 }

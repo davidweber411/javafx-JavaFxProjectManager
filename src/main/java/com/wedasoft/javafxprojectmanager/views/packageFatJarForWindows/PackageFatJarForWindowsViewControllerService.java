@@ -3,9 +3,13 @@ package com.wedasoft.javafxprojectmanager.views.packageFatJarForWindows;
 import com.wedasoft.javafxprojectmanager.enums.AppTypeToCreate;
 import com.wedasoft.javafxprojectmanager.enums.MainClassReferenceType;
 import com.wedasoft.javafxprojectmanager.enums.PackageContentType;
+import com.wedasoft.javafxprojectmanager.enums.UsedJpackage;
 import com.wedasoft.javafxprojectmanager.exceptions.NotValidException;
 import com.wedasoft.simpleJavaFxApplicationBase.jfxDialogs.JfxDialogUtil;
 
+import java.nio.file.Path;
+
+import static com.wedasoft.javafxprojectmanager.views.packageFatJarForWindows.ApplicationPaths.APP_DATA_INCLUDED_JPACKAGE_EXE_PATH;
 import static com.wedasoft.javafxprojectmanager.views.packageFatJarForWindows.ApplicationPaths.APP_DATA_TMP_PATH;
 
 public class PackageFatJarForWindowsViewControllerService {
@@ -34,15 +38,18 @@ public class PackageFatJarForWindowsViewControllerService {
                 .showAndWait();
     }
 
-    public static String createJPackageCommandString(
-            String typeArg, String destArg, String mainJarArg,
-            PackageContentType selectedPackageContentType, String inputArg,
+    public static JPackageCommand createJPackageCommand(
+            UsedJpackage usedJpackage, String usedJpackagePath, String typeArg, String destArg,
+            String mainJarArg, PackageContentType selectedPackageContentType, String inputArg,
             String mainClassArg, String nameArg, String appVersionArg,
             String iconArg, boolean useWinDirChooser, boolean useWinShortcut,
             boolean useWinMenu, MainClassReferenceType selectedMainClassReferenceType,
             AppTypeToCreate selectedAppTypeToCreate) throws NotValidException {
 
-        JPackageCommand jpc = JPackageCommand.createJPackageCommandBuilder();
+        JPackageCommand jpc = JPackageCommand.createJPackageCommandBuilder(usedJpackage == UsedJpackage.FROM_WRAPPED_OPEN_JDK_17
+                ? "\"" + APP_DATA_INCLUDED_JPACKAGE_EXE_PATH + "\""
+                : "\"" + Path.of(usedJpackagePath) + "\"");
+
         jpc.setTypeArg(typeArg);
 
         if (destArg.isEmpty()) {
@@ -97,7 +104,7 @@ public class PackageFatJarForWindowsViewControllerService {
             }
         }
 
-        return jpc.getCommand();
+        return jpc;
     }
 
 }
