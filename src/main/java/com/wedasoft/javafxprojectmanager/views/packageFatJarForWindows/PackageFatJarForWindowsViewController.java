@@ -63,6 +63,7 @@ public class PackageFatJarForWindowsViewController {
             initMainClassTypeChoiceBox();
         } catch (Exception e) {
             e.printStackTrace();
+            JfxDialogUtil.createErrorDialog("An error occured.", e);
         }
     }
 
@@ -141,19 +142,11 @@ public class PackageFatJarForWindowsViewController {
         fileTypeToCreateChoiceBox.setValue(AppTypeToCreate.EXE);
     }
 
-    public void handleMenuItemExit() {
-        PackageFatJarForWindowsViewControllerService.displayExitDialog();
-    }
-
-    public void handleMenuItemHelp() {
+    public void onMenuItemHelpClick() {
         PackageFatJarForWindowsViewControllerService.displayMenuItemHelp();
     }
 
-    public void handleMenuItemAbout() {
-        PackageFatJarForWindowsViewControllerService.displayMenuItemAbout();
-    }
-
-    public void handleButtonChooseDirectoryWithAllFilesToPackagePath() {
+    public void onAllFilesInSelectedDirectoryChooseButtonClick() {
         DirectoryChooser dc = new DirectoryChooser();
         Stage actualStage = (Stage) directoryWithAllFilesToPackageTextField.getScene().getWindow();
         File file = dc.showDialog(actualStage);
@@ -162,7 +155,7 @@ public class PackageFatJarForWindowsViewController {
         }
     }
 
-    public void handleButtonChooseMainJarPath() {
+    public void onPathToMainJarFileChooseButtonClick() {
         FileChooser fc = new FileChooser();
         Stage actualStage = (Stage) mainJarFileNameTextField.getScene().getWindow();
         File file = fc.showOpenDialog(actualStage);
@@ -171,7 +164,7 @@ public class PackageFatJarForWindowsViewController {
         }
     }
 
-    public void handleButtonChooseOutputFileDestinationPath() {
+    public void onOutputFileDestinationDirChooseButtonClick() {
         DirectoryChooser dc = new DirectoryChooser();
         Stage actualStage = (Stage) outputFileDestinationDirectoryTextField.getScene().getWindow();
         File file = dc.showDialog(actualStage);
@@ -180,7 +173,7 @@ public class PackageFatJarForWindowsViewController {
         }
     }
 
-    public void handleButtonChooseApplicationIconPath() {
+    public void onApplicationIconChooseButtonClick() {
         FileChooser fc = new FileChooser();
         Stage actualStage = (Stage) iconFilePathTextField.getScene().getWindow();
         File file = fc.showOpenDialog(actualStage);
@@ -207,7 +200,7 @@ public class PackageFatJarForWindowsViewController {
                 fileTypeToCreateChoiceBox.getSelectionModel().getSelectedItem());
     }
 
-    public void handleButtonCreateJPackageCommand() {
+    public void onCreateJPackageCommandButtonClick() {
         try {
             jPackageCommandTextArea.setText(createJPackageCommand());
         } catch (NotValidException nve) {
@@ -216,13 +209,13 @@ public class PackageFatJarForWindowsViewController {
         }
     }
 
-    public void handleButtonCreateNativeApplication() {
+    public void onCreateNativeApplicationButtonClick() {
         try {
             String jPackageCommand = createJPackageCommand();
-
             if (jPackageCommand == null || jPackageCommand.isEmpty()) {
                 return;
             }
+            jPackageCommandTextArea.setText(jPackageCommand);
 
             /* prepare environment for single jar packaging mode */
             if (filePackageTypeChoiceBox.getSelectionModel().getSelectedItem().equals(PackageContentType.SINGLE_JAR_ONLY)) {
@@ -231,20 +224,17 @@ public class PackageFatJarForWindowsViewController {
             }
 
             /* create a list of separated arguments for the process builder */
-            List<String> jPackageSeparatedArgsAndValuesList = new ArrayList<>();
-            jPackageSeparatedArgsAndValuesList.add(APP_DATA_INCLUDED_JPACKAGE_EXE_PATH.toString());
-            //            {{
-            //                add(APP_DATA_INCLUDED_JPACKAGE_EXE_PATH);
-            //            }};
-            Arrays.stream(jPackageCommand.substring("jpackage".length()).split(" --")).filter((e) -> !e.isBlank() && !e.isEmpty()).map((e) -> "--" + e).forEach((e) -> Collections.addAll(jPackageSeparatedArgsAndValuesList, e.split(" ", 2)));
+            List<String> jPackageArgValueStrings = new ArrayList<>();
+            jPackageArgValueStrings.add(APP_DATA_INCLUDED_JPACKAGE_EXE_PATH.toString());
+            Arrays.stream(jPackageCommand.substring("jpackage".length()).split(" --"))
+                    .filter(e -> !e.isBlank() && !e.isEmpty())
+                    .map(e -> "--" + e)
+                    .forEach((e) -> Collections.addAll(jPackageArgValueStrings, e.split(" ", 2)));
 
             /* start the creation process with process builder */
-            jPackageCommandTextArea.setText(jPackageSeparatedArgsAndValuesList.toString());
+            ProcessBuilder pb = new ProcessBuilder(jPackageArgValueStrings);
+            pb.start().getInputStream().readAllBytes();
 
-            ProcessBuilder pb = new ProcessBuilder();
-            pb.command(jPackageSeparatedArgsAndValuesList);
-            Process process = pb.start();
-            String result = new String(process.getInputStream().readAllBytes());
             JfxDialogUtil.createInformationDialog("The native application is created.").showAndWait();
 
             /* clear environment for single jar packaging mode */

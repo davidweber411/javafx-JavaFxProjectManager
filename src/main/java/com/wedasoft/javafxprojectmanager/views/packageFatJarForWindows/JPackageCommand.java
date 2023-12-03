@@ -2,6 +2,7 @@ package com.wedasoft.javafxprojectmanager.views.packageFatJarForWindows;
 
 import java.nio.file.Path;
 
+@SuppressWarnings("UnusedReturnValue")
 public class JPackageCommand {
 
     private String typeArg;
