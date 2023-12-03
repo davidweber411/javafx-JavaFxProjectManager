@@ -189,6 +189,15 @@ public class PackageFatJarForWindowsViewController {
         }
     }
 
+    public void onChooseJdkButtonClick() {
+        DirectoryChooser dc = new DirectoryChooser();
+        Stage actualStage = (Stage) chooseJdkButton.getScene().getWindow();
+        File file = dc.showDialog(actualStage);
+        if (file != null) {
+            chooseJdkTextField.setText(file.getAbsolutePath());
+        }
+    }
+
     public void onPathToMainJarFileChooseButtonClick() {
         FileChooser fc = new FileChooser();
         Stage actualStage = (Stage) mainJarFileNameTextField.getScene().getWindow();
