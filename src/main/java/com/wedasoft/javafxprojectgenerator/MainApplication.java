@@ -1,6 +1,6 @@
 package com.wedasoft.javafxprojectgenerator;
 
-import com.wedasoft.javafxprojectgenerator.views.createProject.CreateProjectViewController;
+import com.wedasoft.javafxprojectgenerator.views.main.MainViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,11 +13,11 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(
-                "/com/wedasoft/javafxprojectgenerator/views/createProject/create-project.fxml"));
+                "/com/wedasoft/javafxprojectgenerator/views/main/main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        CreateProjectViewController controller = fxmlLoader.getController();
+        MainViewController controller = fxmlLoader.getController();
         controller.init();
-        stage.setTitle("JavaFX project generator");
+        stage.setTitle("JavaFX project manager");
         stage.setScene(scene);
         stage.show();
     }

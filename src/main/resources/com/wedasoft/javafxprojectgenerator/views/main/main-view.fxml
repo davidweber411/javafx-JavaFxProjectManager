@@ -13,10 +13,10 @@
             <children>
                 <VBox spacing="10.0">
                     <children>
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Create project" />
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Package 4 Win" />
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Help" />
-                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="About" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onCreateProjectButtonClick" text="Create project &gt;" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onPackageForWindowsButtonClick" text="Package for Windows &gt;" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onHelpButtonClick" text="Help &gt;" />
+                        <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onAboutButtonClick" text="About &gt;" />
                     </children>
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
