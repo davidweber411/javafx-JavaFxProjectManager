@@ -8,7 +8,6 @@ import lombok.Getter;
 import java.util.List;
 import java.util.Objects;
 
-@SuppressWarnings("ClassCanBeRecord")
 @Getter
 public class MainViewControllerService {
 

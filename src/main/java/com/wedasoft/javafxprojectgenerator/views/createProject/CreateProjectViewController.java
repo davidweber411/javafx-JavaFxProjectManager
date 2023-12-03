@@ -52,30 +52,16 @@ public class CreateProjectViewController {
         projectTypeChoiceBox.setValue(projectTypeChoiceBox.getItems().get(0));
     }
 
-    public void onResetButtonClick(
-            ActionEvent event) {
-
+    public void onResetButtonClick(ActionEvent event) {
         createProjectViewControllerService.onResetButtonClick(event);
     }
 
-    public void onCreateProjectButtonClick(
-            ActionEvent event) {
-
+    public void onCreateProjectButtonClick(ActionEvent event) {
         createProjectViewControllerService.onCreateProjectButtonClick(event);
     }
 
-    public void onChooseDestinationDirectoryButtonClick(
-            ActionEvent event) {
-
+    public void onChooseDestinationDirectoryButtonClick(ActionEvent event) {
         createProjectViewControllerService.onChooseDestinationDirectoryButtonClick(event);
-    }
-
-    public void onMenuItemCloseClick() {
-        createProjectViewControllerService.onMenuItemCloseClick();
-    }
-
-    public void onMenuItemAboutClick() {
-        createProjectViewControllerService.onMenuItemAboutClick();
     }
 
     public void onMenuItemHowToImportInEclipseClick() {

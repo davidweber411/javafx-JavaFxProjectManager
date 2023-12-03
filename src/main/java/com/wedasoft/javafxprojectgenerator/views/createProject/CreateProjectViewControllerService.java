@@ -27,60 +27,47 @@ import java.util.Objects;
 import static com.wedasoft.javafxprojectgenerator.helper.PathConstants.*;
 import static java.nio.file.Path.of;
 
-@SuppressWarnings("ClassCanBeRecord")
 @Getter
 public class CreateProjectViewControllerService {
 
-    private final CreateProjectViewController viewController;
+    private final CreateProjectViewController controller;
 
-    public CreateProjectViewControllerService(
-            CreateProjectViewController viewController) {
-
-        this.viewController = viewController;
+    public CreateProjectViewControllerService(CreateProjectViewController controller) {
+        this.controller = controller;
     }
 
-    public void onResetButtonClick(
-            @SuppressWarnings("unused") ActionEvent event) {
-
-        viewController.getApplicationNameTextField().setText("");
-        viewController.getGroupIdTextField().setText("");
-        viewController.getProjectTypeChoiceBox().setValue(viewController.getProjectTypeChoiceBox().getItems().get(0));
-        viewController.getUsePreconfiguredDatabaseCheckbox().setSelected(true);
-        viewController.getUsePreconfiguredDatabaseVersionTextfield().setText("");
-        viewController.getUseLibraryWedasoftCheckbox().setSelected(true);
-        viewController.getUseLibraryWedasoftVersionTextfield().setText("");
-        viewController.getUseLibraryLombokCheckbox().setSelected(true);
-        viewController.getUseLibraryLombokVersionTextfield().setText("");
-        viewController.getDestinationDirectoryTextField().setText("");
+    public void onResetButtonClick(@SuppressWarnings("unused") ActionEvent event) {
+        controller.getApplicationNameTextField().setText("");
+        controller.getGroupIdTextField().setText("");
+        controller.getProjectTypeChoiceBox().setValue(controller.getProjectTypeChoiceBox().getItems().get(0));
+        controller.getUsePreconfiguredDatabaseCheckbox().setSelected(true);
+        controller.getUsePreconfiguredDatabaseVersionTextfield().setText("");
+        controller.getUseLibraryWedasoftCheckbox().setSelected(true);
+        controller.getUseLibraryWedasoftVersionTextfield().setText("");
+        controller.getUseLibraryLombokCheckbox().setSelected(true);
+        controller.getUseLibraryLombokVersionTextfield().setText("");
+        controller.getDestinationDirectoryTextField().setText("");
     }
 
-    public void onMenuItemCloseClick() {
-        JfxDialogUtil.displayExitProgramDialog();
-    }
-
-    public void onChooseDestinationDirectoryButtonClick(
-            ActionEvent event) {
-
+    public void onChooseDestinationDirectoryButtonClick(ActionEvent event) {
         DirectoryChooser dc = new DirectoryChooser();
         dc.setTitle("Choose the destination directory");
         dc.setInitialDirectory(of(System.getProperty("user.home")).toFile());
         Window ownerWindow = ((Node) event.getSource()).getScene().getWindow();
         File file = dc.showDialog(ownerWindow);
         if (file != null) {
-            viewController.getDestinationDirectoryTextField().setText(file.getAbsolutePath());
+            controller.getDestinationDirectoryTextField().setText(file.getAbsolutePath());
         }
     }
 
-    public void onCreateProjectButtonClick(
-            @SuppressWarnings("unused") ActionEvent event) {
-
+    public void onCreateProjectButtonClick(@SuppressWarnings("unused") ActionEvent event) {
         try {
             ProjectDataDto projectDataDto = new ProjectDataDto(
-                    viewController.getApplicationNameTextField().getText(),
-                    viewController.getGroupIdTextField().getText(),
-                    viewController.getVersionTextField().getText(),
-                    viewController.getProjectTypeChoiceBox().getValue(),
-                    viewController.getDestinationDirectoryTextField().getText());
+                    controller.getApplicationNameTextField().getText(),
+                    controller.getGroupIdTextField().getText(),
+                    controller.getVersionTextField().getText(),
+                    controller.getProjectTypeChoiceBox().getValue(),
+                    controller.getDestinationDirectoryTextField().getText());
 
             prepareAppDataDirInUserHome();
             extractTemplateProjectFromZip(projectDataDto);
@@ -93,14 +80,12 @@ public class CreateProjectViewControllerService {
         } catch (NotValidException nve) {
             JfxDialogUtil.createErrorDialog(nve.getMessage()).showAndWait();
         } catch (Exception e) {
-            JfxDialogUtil.createErrorDialog("Could not create the project.", e).showAndWait();
             e.printStackTrace();
+            JfxDialogUtil.createErrorDialog("Could not create the project.", e).showAndWait();
         }
     }
 
-    private void prepareAppDataDirInUserHome()
-            throws Exception {
-
+    private void prepareAppDataDirInUserHome() throws Exception {
         Files.createDirectories(userHomeAppDataDir);
         FileUtils.cleanDirectory(userHomeAppDataDir.toFile());
     }
@@ -184,14 +169,6 @@ public class CreateProjectViewControllerService {
             ProjectDataDto projectDataDto) {
 
         return userHomeAppDataDir.resolve(of(projectDataDto.getProjectType().getTemplateProjectName(), dirPathPartsToMainViewFxml));
-    }
-
-    public void onMenuItemAboutClick() {
-        DialogHelper.displayDialogWithColumns("About", 2, List.of(
-                new Label("Developed by:"),
-                new Label("David Weber"),
-                new Label("Homepage:"),
-                new Label("www.wedasoft.com")));
     }
 
     public void onMenuItemHowToImportInEclipseClick() {
